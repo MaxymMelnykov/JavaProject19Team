@@ -1,15 +1,14 @@
-package com.example.javaproject19team;
+package com.example.javaproject19team.СlientPackage;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ClientsEditor extends Application {
+public class ClientEditor extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -57,6 +56,7 @@ public class ClientsEditor extends Application {
 
         Button saveButton = new Button("Зберегти");
         GridPane.setConstraints(saveButton, 1, 4);
+        saveButton.setOnAction(e -> saveClient(nameInput.getText(),surnameInput.getText(),emailInput.getText(),phoneInput.getText()));
 
         grid.getChildren().addAll(nameLabel, surnameLabel, emailLabel, phoneLabel, nameInput, surnameInput, emailInput, phoneInput,
                 cancelButton, saveButton);
@@ -66,8 +66,9 @@ public class ClientsEditor extends Application {
         primaryStage.show();
     }
 
-    private void saveReservation(String guestName, String date, String roomType) {
-        // Логіка для збереження гостя
+    private void saveClient(String clientName, String clientSurname, String emailInput,String phoneNumber) {
+        DatabaseHandler.saveClient(clientName, clientSurname, emailInput, phoneNumber);
+
     }
 
     public static void main(String[] args) {

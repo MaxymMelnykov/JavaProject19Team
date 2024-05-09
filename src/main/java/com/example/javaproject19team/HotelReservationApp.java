@@ -1,41 +1,51 @@
 package com.example.javaproject19team;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.example.javaproject19team.ReservationPackage.Reservation;
+import com.example.javaproject19team.ReservationPackage.ReservationWindow;
+import com.example.javaproject19team.RoomPackage.Room;
+import com.example.javaproject19team.RoomPackage.RoomWindow;
+import com.example.javaproject19team.СlientPackage.Client;
+import com.example.javaproject19team.СlientPackage.ClientWindow;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class HotelReservationApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        ArrayList<Client> clients = new ArrayList<>();
+        ArrayList<Room> rooms = new ArrayList<>();
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
         primaryStage.setTitle("Головний екран");
         VBox mainContainer = new VBox();
-        mainContainer.setPadding(new Insets(10)); // Встановлюємо відступи для головного контейнера
-        mainContainer.setSpacing(10); // Відступ між контейнерами
+        mainContainer.setPadding(new Insets(10));
+        mainContainer.setSpacing(10);
 
-
-        HBox buttonsBox = new HBox(); // Використовуємо HBox для розміщення кнопок в ряд
-        buttonsBox.setSpacing(10); // Відступи між кнопками
+        HBox buttonsBox = new HBox();
+        buttonsBox.setSpacing(10);
         buttonsBox.setPadding(new Insets(10, 10, 10, 10));
 
         Button reservationsButton = new Button("Резервації");
-        reservationsButton.setMinWidth(100); // Збільшуємо ширину кнопки
+        reservationsButton.setMinWidth(100);
         reservationsButton.setOnAction(e -> showReservations());
 
         Button clientsButton = new Button("Клієнти");
-        clientsButton.setMinWidth(100); // Збільшуємо ширину кнопки
+        clientsButton.setMinWidth(100);
         clientsButton.setOnAction(e -> showClients());
 
         Button roomsButton = new Button("Номери");
-        roomsButton.setMinWidth(100); // Збільшуємо ширину кнопки
+        roomsButton.setMinWidth(100);
         roomsButton.setOnAction(e -> showRooms());
 
         buttonsBox.getChildren().addAll(reservationsButton, clientsButton, roomsButton);
@@ -59,26 +69,44 @@ public class HotelReservationApp extends Application {
         Label unreservedRoomsLabel = new Label("Кількість доступних номерів :      56");
         unreservedRoomsNumberBox.getChildren().addAll(unreservedRoomsLabel);
 
-
         mainContainer.getChildren().addAll(buttonsBox, typeRoomBox, reservedRoomsNumberBox, unreservedRoomsNumberBox);
 
-        Scene scene = new Scene(mainContainer, 400, 300); // Встановлюємо висоту на 100
+        Scene scene = new Scene(mainContainer, 360, 150);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     private void showReservations() {
-        // Показати екран Резервацій
+        Stage reservationStage = new Stage();
+        ReservationWindow reservationWindow = new ReservationWindow();
+        try {
+            reservationWindow.start(reservationStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Showing Reservations");
     }
 
+
     private void showClients() {
-        // Показати екран Клієнтів
+        Stage clientsStage = new Stage();
+        ClientWindow clientWindow = new ClientWindow();
+        try {
+            clientWindow.start(clientsStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Showing Clients");
     }
 
     private void showRooms() {
-        // Показати екран Номерів
+        Stage roomStage = new Stage();
+        RoomWindow roomWindow = new RoomWindow();
+        try {
+            roomWindow.start(roomStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Showing Rooms");
     }
 

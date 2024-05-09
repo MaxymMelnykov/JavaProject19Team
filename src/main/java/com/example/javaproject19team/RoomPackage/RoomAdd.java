@@ -1,15 +1,14 @@
-package com.example.javaproject19team;
+package com.example.javaproject19team.RoomPackage;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class NumbersAdd extends Application {
+public class RoomAdd extends Application {
 
     @Override
     public void start(Stage primaryStage) {
@@ -56,7 +55,7 @@ public class NumbersAdd extends Application {
         GridPane.setConstraints(cancelButton, 0, 4);
 
         Button saveButton = new Button("Зберегти");
-        //Логіка збереження
+        saveButton.setOnAction(e -> saveRoom(numberInput.getText(),typeInput.getText(), Integer.parseInt(priceInput.getText()),detailsInput.getText()));
         GridPane.setConstraints(saveButton, 1, 4);
 
         grid.getChildren().addAll(numberLabel, typeLabel, priceLabel, detailsLabel , numberInput, typeInput, priceInput, detailsInput,
@@ -67,8 +66,8 @@ public class NumbersAdd extends Application {
         primaryStage.show();
     }
 
-    private void saveReservation(String guestName, String date, String roomType) {
-        // Логіка для збереження номеру
+    private void saveRoom(String number, String type, int price, String details) {
+        DatabaseHandler.saveRoom(number,type, price,details);
 
     }
 

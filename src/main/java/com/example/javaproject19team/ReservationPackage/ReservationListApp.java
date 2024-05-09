@@ -1,48 +1,50 @@
-package com.example.javaproject19team;
+package com.example.javaproject19team.ReservationPackage;
 
+import com.example.javaproject19team.RoomPackage.Room;
+import com.example.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class ReservationsListApp extends Application {
+import java.util.ArrayList;
+
+public class ReservationListApp extends Application {
 
     private TableView<Reservation> tableView;
     private ObservableList<Reservation> reservations;
+    private ArrayList<Client> clients;
+    private ArrayList<Room> rooms;
 
     @Override
     public void start(Stage primaryStage) {
+        clients.add(new Client("Володя","Пиво","masd@gmail.com","+31233123543"));
+        clients.add(new Client("sdfg","dftghо","ghjkd@gmail.com","+3456567867"));
+        rooms.add(new Room("szdf","ddfghо",123,"dfghdfghfdg"));
+        rooms.add(new Room("shgjkhgj","ddjhklhjklghо",12563,"dffghjgfhjhfdg"));
         primaryStage.setTitle("Список резервацій");
 
         // Додамо декілька фіктивних резервацій для демонстрації
         reservations = FXCollections.observableArrayList(
-                new Reservation("Олександр Коваленко", "2024-03-04", "Активна"),
-                new Reservation("Ольга Іваненко", "2024-02-22", "Active"),
-                new Reservation("Андрій Мельник", "2024-03-12", "Active"),
-                new Reservation("Юлія Сидоренко", "2024-03-11", "Active"),
-                new Reservation("Марія Іваненко", "2024-02-04", "Active"),
-                new Reservation("Максим Шевченко", "2024-03-27", "Active"),
-                new Reservation("Тетяна Ковальчук", "2024-03-28", "Не активна")
         );
 
         tableView = new TableView<>();
         tableView.setItems(reservations);
 
-        TableColumn<Reservation, String> guestColumn = new TableColumn<>("Гість");
-        guestColumn.setCellValueFactory(data -> data.getValue().guestProperty());
+        //TableColumn<Reservation, String> guestColumn = new TableColumn<>("Гість");
+        //guestColumn.setCellValueFactory(data);
 
         TableColumn<Reservation, String> dateColumn = new TableColumn<>("Дата резервації");
-        dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
+        //dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
 
-        TableColumn<Reservation, String> statusColumn = new TableColumn<>("Статус");
-        statusColumn.setCellValueFactory(data -> data.getValue().statusProperty());
+        //TableColumn<Reservation, String> statusColumn = new TableColumn<>("Статус");
+        //statusColumn.setCellValueFactory(data -> data.getValue().statusProperty());
 
-        tableView.getColumns().addAll(guestColumn, dateColumn, statusColumn);
+        //tableView.getColumns().addAll(guestColumn, dateColumn, statusColumn);
 
         // Додамо контрольні елементи для фільтрації
         DatePicker datePicker = new DatePicker();
@@ -53,7 +55,7 @@ public class ReservationsListApp extends Application {
         statusFilter.setValue("Всі");
 
         Button filterButton = new Button("Фільтрувати");
-        filterButton.setOnAction(e -> filterReservations(String.valueOf(datePicker.getValue()), statusFilter.getValue()));
+        //filterButton.setOnAction(e -> filterReservations(String.valueOf(datePicker.getValue()), statusFilter.getValue()));
 
         BorderPane root = new BorderPane();
         root.setTop(new HBox(datePicker, statusFilter, filterButton));
@@ -64,7 +66,7 @@ public class ReservationsListApp extends Application {
         primaryStage.show();
     }
 
-    private void filterReservations(String selectedDate, String selectedStatus) {
+    /*private void filterReservations(String selectedDate, String selectedStatus) {
         ObservableList<Reservation> filteredList = FXCollections.observableArrayList();
         for (Reservation reservation : reservations) {
             if (("All".equals(selectedStatus) || reservation.getStatus().equals(selectedStatus)) &&
@@ -73,7 +75,7 @@ public class ReservationsListApp extends Application {
             }
         }
         tableView.setItems(filteredList);
-    }
+    }*/
 
     public static void main(String[] args) {
         launch(args);

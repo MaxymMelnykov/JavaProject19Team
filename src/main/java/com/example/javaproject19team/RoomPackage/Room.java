@@ -1,17 +1,17 @@
-package com.example.javaproject19team;
+package com.example.javaproject19team.RoomPackage;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Numbers {
+public class Room {
     private final StringProperty number;
     private final StringProperty type;
     private final IntegerProperty price;
     private final StringProperty details;
 
-    public Numbers(String number, String type, int price, String details) {
+    public Room(String number, String type, int price, String details) {
         this.number = new SimpleStringProperty(number);
         this.type = new SimpleStringProperty(type);
         this.price = new SimpleIntegerProperty(price);

@@ -1,4 +1,4 @@
-package com.example.javaproject19team;
+package com.example.javaproject19team.ReservationPackage;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -51,12 +51,12 @@ public class ReservationEditor extends Application {
 
         // Buttons
         Button cancelButton = new Button("Скасувати");
-        cancelButton.setOnAction(e -> primaryStage.close());
         GridPane.setConstraints(cancelButton, 0, 4);
+        cancelButton.setOnAction(e -> primaryStage.close());
 
         Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction(e -> saveReservation(nameInput.getText(), String.valueOf(datePicker.getValue()), roomComboBox.getValue()));
         GridPane.setConstraints(saveButton, 1, 4);
+        saveButton.setOnAction(e -> saveReservation(nameInput.getText(), String.valueOf(datePicker.getValue()), roomComboBox.getValue()));
 
         grid.getChildren().addAll(nameLabel, nameInput, dateLabel, datePicker, roomTypeLabel, roomNumberLabel, roomComboBox, roomNumberInput,
                 cancelButton, saveButton);
@@ -67,11 +67,7 @@ public class ReservationEditor extends Application {
     }
 
     private void saveReservation(String guestName, String date, String roomType) {
-        // Логіка для збереження резервації
-        System.out.println("Зберігаємо резервацію:");
-        System.out.println("Ім'я гостя: " + guestName);
-        System.out.println("Дата: " + date);
-        System.out.println("Тип кімнати: " + roomType);
+
     }
 
     public static void main(String[] args) {
