@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HotelReservationApp extends Application implements ClientListener, RoomListener, ReservationListener {
     static ArrayList<Client> clients = new ArrayList<>();
@@ -154,6 +155,17 @@ public class HotelReservationApp extends Application implements ClientListener, 
             }
         }
     }
+    public static void getReservationsFromDB(){
+        int countReservaionsInDB = DatabaseHandler.countReservationsFromDB();
+        for(int i = 0; i < countReservaionsInDB; i++){
+            try {
+                reservations.add(i,DatabaseHandler.getReservationFromDB(i + 1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static ArrayList<Client> getClients() {
         return clients;
     }
@@ -167,8 +179,10 @@ public class HotelReservationApp extends Application implements ClientListener, 
     }
 
     public static void main(String[] args) {
+
         getClientsFromDB();
         getRoomsFromDB();
+        getReservationsFromDB();
         launch(args);
     }
 }

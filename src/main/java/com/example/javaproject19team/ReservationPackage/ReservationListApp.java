@@ -41,7 +41,7 @@ public class ReservationListApp extends Application {
         arrivalDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
 
         TableColumn<Reservation, LocalDate> departureDateColumn = new TableColumn<>("Дата кінця резервації");
-        departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+        departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("departureDate"));
         departureDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
 
         TableColumn<Reservation, String> statusColumn = new TableColumn<>("Статус");

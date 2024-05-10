@@ -23,6 +23,8 @@ public class DatabaseHandler {
     private static final String SELECT_RESERVATION_SQL = "SELECT * FROM Reservations WHERE reservationID = ?";
     private static final String SELECT_COUNT_ALL_CLIENTS_SQL = "SELECT COUNT(*) FROM clients";
     private static final String SELECT_COUNT_ALL_ROOMS_SQL = "SELECT COUNT(*) FROM Rooms";
+    private static final String SELECT_COUNT_ALL_RESERVATIONS_SQL = "SELECT COUNT(*) FROM Reservations";
+    private static final String SELECT_CLIENT_ID_FROM_RESERVATION_SQL = "SELECT ClientID From Reservations where ReservationID = ?";
 
     public static int countRoomsFromDB() {
         int counter = 0;
@@ -51,6 +53,21 @@ public class DatabaseHandler {
         }
         return counter;
     }
+
+    public static int countReservationsFromDB() {
+        int counter = 0;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COUNT_ALL_RESERVATIONS_SQL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                counter = resultSet.getInt(1); // Получить значение из первого столбца результата запроса
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return counter;
+    }
+
 
     public static void saveClientDB(String clientName, String clientSurname, String email, String phone) {
         try (Connection connection = DatabaseConnection.getConnection();
@@ -141,29 +158,35 @@ public class DatabaseHandler {
         }
         return room;
     }
-    public static Reservation getReservationFromDB(int ReservationID){
+    public static Reservation getReservationFromDB(int reservationID) {
         Reservation reservation = null;
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_RESERVATION_SQL)) {
-            preparedStatement.setInt(1, ReservationID);
+
+            preparedStatement.setInt(1, reservationID);
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    /* TODO
-                    Client client = HotelReservationApp.getClients().
-                    IntegerProperty roomID = new SimpleIntegerProperty(resultSet.getInt("roomID"));
+                    int clientID = resultSet.getInt("clientID");
+                    int roomID = resultSet.getInt("roomID");
                     LocalDate arrivalDate = resultSet.getDate("arrivalDate").toLocalDate();
                     LocalDate departureDate = resultSet.getDate("departureDate").toLocalDate();
                     boolean status = resultSet.getBoolean("reservationStatus");
 
-                    reservation = new Reservation(clientID, roomID, arrivalDate, departureDate, status);*/
+                    Room room = getRoomFromDB(roomID);
+                    Client client = getClientFromDB(clientID);
+
+                    reservation = new Reservation(client, room, arrivalDate, departureDate, status);
                 }
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return room;
+        return reservation;
     }
-    }
+
+
 
     public static int getClientIDFromDB(Client client) {
         int ID = 0;
@@ -202,6 +225,8 @@ public class DatabaseHandler {
         }
         return ID;
     }
+
+
 }
 
 
