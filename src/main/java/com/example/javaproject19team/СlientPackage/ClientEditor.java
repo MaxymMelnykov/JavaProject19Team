@@ -1,18 +1,24 @@
 package com.example.javaproject19team.СlientPackage;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.example.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class ClientEditor extends Application {
+    private ClientListener clientListener;
+
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Додавання клієнта");
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10));
@@ -56,7 +62,13 @@ public class ClientEditor extends Application {
 
         Button saveButton = new Button("Зберегти");
         GridPane.setConstraints(saveButton, 1, 4);
-        saveButton.setOnAction(e -> saveClient(nameInput.getText(),surnameInput.getText(),emailInput.getText(),phoneInput.getText()));
+        saveButton.setOnAction(e -> saveClient(
+                new SimpleStringProperty(nameInput.getText()),
+                new SimpleStringProperty(surnameInput.getText()),
+                new SimpleStringProperty(emailInput.getText()),
+                new SimpleStringProperty(phoneInput.getText())));
+
+
 
         grid.getChildren().addAll(nameLabel, surnameLabel, emailLabel, phoneLabel, nameInput, surnameInput, emailInput, phoneInput,
                 cancelButton, saveButton);
@@ -66,9 +78,20 @@ public class ClientEditor extends Application {
         primaryStage.show();
     }
 
-    private void saveClient(String clientName, String clientSurname, String emailInput,String phoneNumber) {
-        DatabaseHandler.saveClient(clientName, clientSurname, emailInput, phoneNumber);
+    private void saveClient(StringProperty clientName, StringProperty clientSurname, StringProperty emailInput, StringProperty phoneNumber) {
+        String clientNameDB = clientName.get();
+        String clientSurnameDB = clientSurname.get();
+        String emailDB = emailInput.get();
+        String phoneDB = phoneNumber.get();
 
+        DatabaseHandler.saveClient(clientNameDB,clientSurnameDB,emailDB,phoneDB);
+        Client newClient = new Client(clientName, clientSurname, emailInput, phoneNumber);
+        clientListener.onClientSaved(newClient);
+
+    }
+
+    public void setClientListener(ClientListener listener) {
+        this.clientListener = listener;
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,5 @@
 package com.example.javaproject19team.СlientPackage;
 
-import com.example.javaproject19team.СlientPackage.ClientEditor;
-import com.example.javaproject19team.СlientPackage.ClientListApp;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,6 +8,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 public class ClientWindow extends Application{
 
+    private ClientListener clientListener;
+
+    public void setClientListener(ClientListener clientListener) {
+        this.clientListener = clientListener;
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
@@ -40,6 +43,7 @@ public class ClientWindow extends Application{
     private void showAddOrRemoveClients() {
         Stage addOrRemoveClients = new Stage();
         ClientEditor clientEditor = new ClientEditor();
+        clientEditor.setClientListener(clientListener);
         try {
             clientEditor.start(addOrRemoveClients);
         } catch (Exception e) {

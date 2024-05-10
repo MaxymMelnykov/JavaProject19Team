@@ -8,11 +8,11 @@ import javafx.beans.property.StringProperty;
 public class Reservation {
     private Client client;
     private Room room;
-    private String arrivalDate;
-    private String departureDate;
-    private boolean status;
+    private StringProperty arrivalDate;
+    private StringProperty departureDate;
+    private boolean status; //Убрать?
 
-    public Reservation(Client client, Room room, String arrivalDate, String departureDate, boolean status) {
+    public Reservation(Client client, Room room, StringProperty arrivalDate, StringProperty departureDate, boolean status) {
         this.client = client;
         this.room = room;
         this.arrivalDate = arrivalDate;
@@ -37,19 +37,27 @@ public class Reservation {
     }
 
     public String getArrivalDate() {
+        return arrivalDate.get();
+    }
+
+    public StringProperty arrivalDateProperty() {
         return arrivalDate;
     }
 
     public void setArrivalDate(String arrivalDate) {
-        this.arrivalDate = arrivalDate;
+        this.arrivalDate.set(arrivalDate);
     }
 
     public String getDepartureDate() {
+        return departureDate.get();
+    }
+
+    public StringProperty departureDateProperty() {
         return departureDate;
     }
 
     public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
+        this.departureDate.set(departureDate);
     }
 
     public boolean isStatus() {
@@ -59,4 +67,5 @@ public class Reservation {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 }

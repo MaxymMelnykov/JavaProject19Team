@@ -22,11 +22,7 @@ public class ReservationListApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        clients.add(new Client("Володя","Пиво","masd@gmail.com","+31233123543"));
-        clients.add(new Client("sdfg","dftghо","ghjkd@gmail.com","+3456567867"));
-        rooms.add(new Room("szdf","ddfghо",123,"dfghdfghfdg"));
-        rooms.add(new Room("shgjkhgj","ddjhklhjklghо",12563,"dffghjgfhjhfdg"));
-        primaryStage.setTitle("Список резервацій");
+
 
         // Додамо декілька фіктивних резервацій для демонстрації
         reservations = FXCollections.observableArrayList(

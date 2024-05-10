@@ -1,5 +1,6 @@
 package com.example.javaproject19team.RoomPackage;
 
+import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.RoomPackage.Room;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -16,11 +17,7 @@ public class RoomListApp extends Application {
         primaryStage.setTitle("Список доступних номерів");
 
         // Створення списку доступних номерів
-        ObservableList<Room> rooms = FXCollections.observableArrayList(
-                new Room("101", "Стандарт", 100, "Детальна інформація 1"),
-                new Room("202", "Полулюкс", 150, "Детальна інформація 2"),
-                new Room("303", "Люкс", 200, "Детальна інформація 3")
-        );
+        ObservableList<Room> rooms = FXCollections.observableArrayList(HotelReservationApp.getRooms());
 
         // Створення TableView для відображення списку номерів
         TableView<Room> tableView = new TableView<>(rooms);

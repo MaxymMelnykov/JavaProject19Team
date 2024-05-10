@@ -11,11 +11,13 @@ public class Room {
     private final IntegerProperty price;
     private final StringProperty details;
 
-    public Room(String number, String type, int price, String details) {
-        this.number = new SimpleStringProperty(number);
-        this.type = new SimpleStringProperty(type);
-        this.price = new SimpleIntegerProperty(price);
-        this.details = new SimpleStringProperty(details);
+    //Добавить занята/не занята
+
+    public Room(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details) {
+        this.number = number;
+        this.type = type;
+        this.price = price;
+        this.details = details;
     }
 
     public String getNumber() {
@@ -62,9 +64,19 @@ public class Room {
         return details;
     }
 
+    @Override
+    public String toString() {
+        return "Номер "
+                + number.get() +
+                ", " + type.get() +
+                ", " + price.get() +
+                ", " + details.get();
+    }
+
     public void setDetails(String details) {
         this.details.set(details);
     }
+
 }
 
 

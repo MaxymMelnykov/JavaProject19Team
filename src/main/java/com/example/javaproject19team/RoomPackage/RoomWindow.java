@@ -2,6 +2,7 @@ package com.example.javaproject19team.RoomPackage;
 
 import com.example.javaproject19team.RoomPackage.RoomAdd;
 import com.example.javaproject19team.RoomPackage.RoomListApp;
+import com.example.javaproject19team.СlientPackage.ClientListener;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,6 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 public class RoomWindow extends Application{
+    private RoomListener roomListener;
+
+    public void setRoomListener(RoomListener roomListener) {
+        this.roomListener = roomListener;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -32,7 +38,7 @@ public class RoomWindow extends Application{
         primaryStage.show();
     }
 
-    private void showRooms() {
+    public static void showRooms() {
         Stage showRooms = new Stage();
         RoomListApp roomListApp = new RoomListApp();
         try {
@@ -43,9 +49,11 @@ public class RoomWindow extends Application{
         System.out.println("Showing showRooms");
     }
 
+
     private void showRoomAdd() {
         Stage showRooms = new Stage();
         RoomAdd roomAdd = new RoomAdd();
+        roomAdd.setRoomListener(roomListener);
         try {
             roomAdd.start(showRooms);
         } catch (Exception e) {

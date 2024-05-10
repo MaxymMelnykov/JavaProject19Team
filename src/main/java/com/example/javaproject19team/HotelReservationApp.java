@@ -2,10 +2,13 @@ package com.example.javaproject19team;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.ReservationPackage.Reservation;
+import com.example.javaproject19team.ReservationPackage.ReservationListener;
 import com.example.javaproject19team.ReservationPackage.ReservationWindow;
 import com.example.javaproject19team.RoomPackage.Room;
+import com.example.javaproject19team.RoomPackage.RoomListener;
 import com.example.javaproject19team.RoomPackage.RoomWindow;
 import com.example.javaproject19team.СlientPackage.Client;
+import com.example.javaproject19team.СlientPackage.ClientListener;
 import com.example.javaproject19team.СlientPackage.ClientWindow;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -19,13 +22,12 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class HotelReservationApp extends Application {
-
+public class HotelReservationApp extends Application implements ClientListener, RoomListener, ReservationListener {
+    static ArrayList<Client> clients = new ArrayList<>();
+    static ArrayList<Room> rooms = new ArrayList<>();
+    static ArrayList<Reservation> reservations = new ArrayList<>();
     @Override
     public void start(Stage primaryStage) {
-        ArrayList<Client> clients = new ArrayList<>();
-        ArrayList<Room> rooms = new ArrayList<>();
-        ArrayList<Reservation> reservations = new ArrayList<>();
 
         primaryStage.setTitle("Головний екран");
         VBox mainContainer = new VBox();
@@ -74,11 +76,13 @@ public class HotelReservationApp extends Application {
         Scene scene = new Scene(mainContainer, 360, 150);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     private void showReservations() {
         Stage reservationStage = new Stage();
         ReservationWindow reservationWindow = new ReservationWindow();
+        reservationWindow.setReservationListener(this);
         try {
             reservationWindow.start(reservationStage);
         } catch (Exception e) {
@@ -91,6 +95,7 @@ public class HotelReservationApp extends Application {
     private void showClients() {
         Stage clientsStage = new Stage();
         ClientWindow clientWindow = new ClientWindow();
+        clientWindow.setClientListener(this);
         try {
             clientWindow.start(clientsStage);
         } catch (Exception e) {
@@ -99,9 +104,11 @@ public class HotelReservationApp extends Application {
         System.out.println("Showing Clients");
     }
 
+
     private void showRooms() {
         Stage roomStage = new Stage();
         RoomWindow roomWindow = new RoomWindow();
+        roomWindow.setRoomListener(this);
         try {
             roomWindow.start(roomStage);
         } catch (Exception e) {
@@ -110,7 +117,36 @@ public class HotelReservationApp extends Application {
         System.out.println("Showing Rooms");
     }
 
+    @Override
+    public void onClientSaved(Client client) {
+        clients.add(client);
+        System.out.println(clients.get(0).getName());
+    }
+    @Override
+    public void onRoomSaved(Room room) {
+        rooms.add(room);
+        System.out.println(rooms.get(0).getNumber());
+    }
+    public void onReservationSaved(Reservation reservation){
+        reservations.add(reservation);
+        System.out.println(reservations.get(0).getArrivalDate());
+    }
+
+
+    public static ArrayList<Client> getClients() {
+        return clients;
+    }
+
+    public static ArrayList<Room> getRooms() {
+        return rooms;
+    }
+
+    public static ArrayList<Reservation> getReservations() {
+        return reservations;
+    }
+
     public static void main(String[] args) {
         launch(args);
+
     }
 }

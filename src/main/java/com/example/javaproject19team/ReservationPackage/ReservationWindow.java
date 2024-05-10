@@ -2,6 +2,7 @@ package com.example.javaproject19team.ReservationPackage;
 
 import com.example.javaproject19team.ReservationPackage.ReservationEditor;
 import com.example.javaproject19team.ReservationPackage.ReservationListApp;
+import com.example.javaproject19team.RoomPackage.RoomListener;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,6 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 public class ReservationWindow extends Application{
+    private ReservationListener reservationListener;
+    public void setReservationListener(ReservationListener reservationListener) {
+        this.reservationListener = reservationListener;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,6 +40,7 @@ public class ReservationWindow extends Application{
     private void showAddOrRemoveReservaions() {
         Stage showAddOrRemoveReservaions = new Stage();
         ReservationEditor reservationEditor = new ReservationEditor();
+        reservationEditor.setReservationListener(reservationListener);
         try {
             reservationEditor.start(showAddOrRemoveReservaions);
         } catch (Exception e) {
