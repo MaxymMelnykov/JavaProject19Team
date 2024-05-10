@@ -1,23 +1,57 @@
 package com.example.javaproject19team.ReservationPackage;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class Reservation {
     private Client client;
     private Room room;
-    private String arrivalDate;
-    private String departureDate;
-    private boolean status;
-
-    public Reservation(Client client, Room room, String arrivalDate, String departureDate, boolean status) {
+    private LocalDate arrivalDate;
+    private LocalDate departureDate;
+    private boolean status; //Убрать?
+    //TODO сделать так чтоб статус менялся когда проходило время сьема номера
+    public Reservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate, boolean status) {
         this.client = client;
         this.room = room;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.status = status;
+
+        switch (room.getType()){
+            case "Одномістний":
+                DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                room.setStatus(false);
+            case "Двомістний":
+                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 2)) {
+                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    room.setStatus(false);
+                }
+                    break;
+            case "Багатовмістний":
+                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 5)) {
+                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    room.setStatus(false);
+                }
+                    break;
+            default:
+                room.setStatus(true);
+        }
+    }
+
+    public void setArrivalDate(LocalDate arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+
+    public void setDepartureDate(LocalDate departureDate) {
+        this.departureDate = departureDate;
     }
 
     public Client getClient() {
@@ -36,20 +70,13 @@ public class Reservation {
         this.room = room;
     }
 
-    public String getArrivalDate() {
+
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(String arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public String getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
-    }
-
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
     }
 
     public boolean isStatus() {
@@ -59,4 +86,6 @@ public class Reservation {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+
 }

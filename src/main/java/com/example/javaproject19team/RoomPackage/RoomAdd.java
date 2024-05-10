@@ -2,6 +2,10 @@ package com.example.javaproject19team.RoomPackage;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class RoomAdd extends Application {
+    RoomListener roomListener;
 
     @Override
     public void start(Stage primaryStage) {
@@ -37,8 +42,8 @@ public class RoomAdd extends Application {
         numberInput.setPromptText("Введіть номер");
         GridPane.setConstraints(numberInput, 1, 0);
 
-        TextField typeInput = new TextField();
-        typeInput.setPromptText("Введіть тип");
+        ComboBox<String> typeInput = new ComboBox<>();
+        typeInput.getItems().addAll("Одномістний","Двомістний","Багатовмістний");
         GridPane.setConstraints(typeInput, 1, 1);
 
         TextField priceInput = new TextField();
@@ -55,10 +60,14 @@ public class RoomAdd extends Application {
         GridPane.setConstraints(cancelButton, 0, 4);
 
         Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction(e -> saveRoom(numberInput.getText(),typeInput.getText(), Integer.parseInt(priceInput.getText()),detailsInput.getText()));
+        saveButton.setOnAction(e -> saveRoom(
+                new SimpleStringProperty(numberInput.getText()),
+                new SimpleStringProperty(typeInput.getValue()),
+                new SimpleIntegerProperty(Integer.parseInt(priceInput.getText())),
+                new SimpleStringProperty(detailsInput.getText())));
         GridPane.setConstraints(saveButton, 1, 4);
 
-        grid.getChildren().addAll(numberLabel, typeLabel, priceLabel, detailsLabel , numberInput, typeInput, priceInput, detailsInput,
+        grid.getChildren().addAll(numberLabel, typeLabel, priceLabel, detailsLabel, numberInput, typeInput, priceInput, detailsInput,
                 cancelButton, saveButton);
 
         Scene scene = new Scene(grid, 300, 200);
@@ -66,12 +75,29 @@ public class RoomAdd extends Application {
         primaryStage.show();
     }
 
-    private void saveRoom(String number, String type, int price, String details) {
-        DatabaseHandler.saveRoom(number,type, price,details);
+    private void saveRoom(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details) {
+        String numberDB = number.get();
+        String typeDB = type.get();
+        int priceDB = price.get();
+        String detailsDB = details.get();
+        boolean status = true;
 
+        if (DatabaseHandler.isRoomOccupied(numberDB)) {
+            status = false; // Если комната уже занята, устанавливаем статус как занятый
+        }
+
+        DatabaseHandler.saveRoomDB(numberDB, typeDB, priceDB, detailsDB,status);
+        Room newRoom = new Room(number, type, price, details, status);
+        roomListener.onRoomSaved(newRoom);
+
+    }
+
+    public void setRoomListener(RoomListener listener) {
+        this.roomListener = listener;
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }

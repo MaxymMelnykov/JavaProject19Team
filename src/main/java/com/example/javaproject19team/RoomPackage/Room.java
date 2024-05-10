@@ -1,8 +1,6 @@
 package com.example.javaproject19team.RoomPackage;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Room {
@@ -10,12 +8,22 @@ public class Room {
     private final StringProperty type;
     private final IntegerProperty price;
     private final StringProperty details;
+    private boolean status; // True - Вільний / False - Зайнятий
 
-    public Room(String number, String type, int price, String details) {
-        this.number = new SimpleStringProperty(number);
-        this.type = new SimpleStringProperty(type);
-        this.price = new SimpleIntegerProperty(price);
-        this.details = new SimpleStringProperty(details);
+    public Room(StringProperty number, StringProperty type, IntegerProperty price,StringProperty details, boolean status) {
+        this.number = number;
+        this.type = type;
+        this.price = price;
+        this.details = details;
+        this.status = status;
+    }
+//TODO сделать так чтоб статус менялся когда проходило время сьема номера
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public String getNumber() {
@@ -62,9 +70,19 @@ public class Room {
         return details;
     }
 
+    @Override
+    public String toString() {
+        return "Номер "
+                + number.get() +
+                ", " + type.get() +
+                ", " + price.get() +
+                ", " + details.get();
+    }
+
     public void setDetails(String details) {
         this.details.set(details);
     }
+
 }
 
 
