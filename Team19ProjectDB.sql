@@ -17,7 +17,8 @@ create table Rooms(
     number varchar(255),
     type varchar(255),
     price numeric(100),
-    details text
+    details text,
+    roomStatus boolean
 );
 
 create table Reservations(
@@ -28,9 +29,9 @@ create table Reservations(
     FOREIGN KEY (clientID) references Clients (clientID),
     arrivalDate date,
     departureDate date,
-    status boolean
+    reservationStatus boolean
 );
 
-INSERT INTO clients (name, surname, email, phone) VALUES ('dsfgdsfg', 'dsfgdsfg', 'dsfgdsfg','dsfgdsfg');
-INSERT INTO Rooms (number,type,price,details) VALUES ('dsfgdsfg', 'dsfgdsfg', 234,'dsfgdsfg');
-INSERT INTO Reservations(roomid, clientid, arrivaldate, departuredate,status) VALUES (1,1,TO_DATE('2021-11-16', 'YYYY-MM-DD'),TO_DATE('2022-11-16', 'YYYY-MM-DD'),true);
+
+
+
