@@ -3,6 +3,7 @@ package com.example.javaproject19team.RoomPackage;
 import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.RoomPackage.Room;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ public class RoomListApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //TODO Менять статус комнаты когда по ней создана резервация.
         primaryStage.setTitle("Список доступних номерів");
 
         // Створення списку доступних номерів
@@ -35,7 +37,14 @@ public class RoomListApp extends Application {
         TableColumn<Room, String> detailsColumn = new TableColumn<>("Детальна інформація");
         detailsColumn.setCellValueFactory(data -> data.getValue().detailsProperty());
 
-        tableView.getColumns().addAll(numberColumn, typeColumn, priceColumn, detailsColumn);
+        TableColumn<Room, String> statusColumn = new TableColumn<>("Статус");
+        statusColumn.setCellValueFactory(data -> {
+            boolean status = data.getValue().isStatus();
+            String statusText = status ? "Вільний" : "Зайнятий";
+            return new SimpleStringProperty(statusText);
+        });
+
+        tableView.getColumns().addAll(numberColumn, typeColumn, priceColumn, detailsColumn,statusColumn);
 
 
         Scene scene = new Scene(tableView, 600, 400);

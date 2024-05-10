@@ -121,6 +121,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
     public void onClientSaved(Client client) {
         clients.add(client);
         System.out.println(clients.get(0).getName());
+        System.out.println(DatabaseHandler.countClientsFromDB());
     }
     @Override
     public void onRoomSaved(Room room) {
@@ -132,7 +133,27 @@ public class HotelReservationApp extends Application implements ClientListener, 
         System.out.println(reservations.get(0).getArrivalDate());
     }
 
+    public static void getClientsFromDB(){
+        int countClientsInDB = DatabaseHandler.countClientsFromDB();
+        for (int i = 0; i < countClientsInDB; i++) {
+            try {
+                clients.add(i,DatabaseHandler.getClientFromDB(i + 1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    public static void getRoomsFromDB(){
+        int countRoomsInDB = DatabaseHandler.countRoomsFromDB();
+        for(int i = 0; i < countRoomsInDB; i++){
+            try {
+                rooms.add(i,DatabaseHandler.getRoomFromDB(i + 1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public static ArrayList<Client> getClients() {
         return clients;
     }
@@ -146,7 +167,8 @@ public class HotelReservationApp extends Application implements ClientListener, 
     }
 
     public static void main(String[] args) {
+        getClientsFromDB();
+        getRoomsFromDB();
         launch(args);
-
     }
 }

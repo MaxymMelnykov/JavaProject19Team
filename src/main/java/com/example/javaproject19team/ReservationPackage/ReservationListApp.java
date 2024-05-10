@@ -1,46 +1,58 @@
 package com.example.javaproject19team.ReservationPackage;
 
+import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateStringConverter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ReservationListApp extends Application {
 
-    private TableView<Reservation> tableView;
-    private ObservableList<Reservation> reservations;
-    private ArrayList<Client> clients;
-    private ArrayList<Room> rooms;
+
+
 
     @Override
     public void start(Stage primaryStage) {
-
-
-        // Додамо декілька фіктивних резервацій для демонстрації
-        reservations = FXCollections.observableArrayList(
-        );
+        TableView<Reservation> tableView;
+        ObservableList<Reservation> reservations = FXCollections.observableArrayList(HotelReservationApp.getReservations());
 
         tableView = new TableView<>();
         tableView.setItems(reservations);
 
-        //TableColumn<Reservation, String> guestColumn = new TableColumn<>("Гість");
-        //guestColumn.setCellValueFactory(data);
 
-        TableColumn<Reservation, String> dateColumn = new TableColumn<>("Дата резервації");
-        //dateColumn.setCellValueFactory(data -> data.getValue().dateProperty());
+        TableColumn<Reservation, String> clientSurnameColumn = new TableColumn<>("Фамілія гостя");
+        clientSurnameColumn.setCellValueFactory(data -> data.getValue().getClient().surnameProperty());
 
-        //TableColumn<Reservation, String> statusColumn = new TableColumn<>("Статус");
-        //statusColumn.setCellValueFactory(data -> data.getValue().statusProperty());
+        TableColumn<Reservation, LocalDate> arrivalDateColumn = new TableColumn<>("Дата початку резервації");
+        arrivalDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+        arrivalDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
 
-        //tableView.getColumns().addAll(guestColumn, dateColumn, statusColumn);
+        TableColumn<Reservation, LocalDate> departureDateColumn = new TableColumn<>("Дата кінця резервації");
+        departureDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
+        departureDateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+
+        TableColumn<Reservation, String> statusColumn = new TableColumn<>("Статус");
+        statusColumn.setCellValueFactory(data -> {
+            boolean status = data.getValue().isStatus();
+            String statusText = status ? "Активна" : "Не активна";
+            return new SimpleStringProperty(statusText);
+        });
+
+        tableView.getColumns().addAll(clientSurnameColumn, arrivalDateColumn, departureDateColumn, statusColumn);
+
 
         // Додамо контрольні елементи для фільтрації
         DatePicker datePicker = new DatePicker();

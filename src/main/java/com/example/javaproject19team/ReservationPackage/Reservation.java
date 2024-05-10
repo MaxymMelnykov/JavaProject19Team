@@ -4,20 +4,32 @@ import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+
+import java.time.LocalDate;
 
 public class Reservation {
     private Client client;
     private Room room;
-    private StringProperty arrivalDate;
-    private StringProperty departureDate;
+    private LocalDate arrivalDate;
+    private LocalDate departureDate;
     private boolean status; //Убрать?
-
-    public Reservation(Client client, Room room, StringProperty arrivalDate, StringProperty departureDate, boolean status) {
+    //TODO сделать так чтоб статус менялся когда проходило время сьема номера
+    public Reservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate, boolean status) {
         this.client = client;
         this.room = room;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.status = status;
+    }
+
+    public void setArrivalDate(LocalDate arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+
+    public void setDepartureDate(LocalDate departureDate) {
+        this.departureDate = departureDate;
     }
 
     public Client getClient() {
@@ -36,28 +48,13 @@ public class Reservation {
         this.room = room;
     }
 
-    public String getArrivalDate() {
-        return arrivalDate.get();
-    }
 
-    public StringProperty arrivalDateProperty() {
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(String arrivalDate) {
-        this.arrivalDate.set(arrivalDate);
-    }
-
-    public String getDepartureDate() {
-        return departureDate.get();
-    }
-
-    public StringProperty departureDateProperty() {
+    public LocalDate getDepartureDate() {
         return departureDate;
-    }
-
-    public void setDepartureDate(String departureDate) {
-        this.departureDate.set(departureDate);
     }
 
     public boolean isStatus() {
@@ -67,5 +64,6 @@ public class Reservation {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 
 }

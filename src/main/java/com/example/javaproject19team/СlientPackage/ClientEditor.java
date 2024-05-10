@@ -1,7 +1,6 @@
 package com.example.javaproject19team.СlientPackage;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
-import com.example.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -10,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 public class ClientEditor extends Application {
     private ClientListener clientListener;
@@ -84,7 +81,7 @@ public class ClientEditor extends Application {
         String emailDB = emailInput.get();
         String phoneDB = phoneNumber.get();
 
-        DatabaseHandler.saveClient(clientNameDB,clientSurnameDB,emailDB,phoneDB);
+        DatabaseHandler.saveClientDB(clientNameDB,clientSurnameDB,emailDB,phoneDB);
         Client newClient = new Client(clientName, clientSurname, emailInput, phoneNumber);
         clientListener.onClientSaved(newClient);
 

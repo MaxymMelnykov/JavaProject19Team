@@ -1,13 +1,13 @@
 package com.example.javaproject19team.СlientPackage;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
 public class Client {
-        private final StringProperty name;
-        private final StringProperty surname;
-        private final StringProperty email;
-        private final StringProperty phone;
+    private final StringProperty name;
+    private final StringProperty surname;
+    private final StringProperty email;
+    private final StringProperty phone;
 
     public Client(StringProperty name, StringProperty surname, StringProperty email, StringProperty phone) {
         this.name = name;
@@ -67,7 +67,7 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Клієнт "+
+        return "Клієнт " +
                 name.get() + " " +
                 surname.get() +
                 ", " + email.get() +

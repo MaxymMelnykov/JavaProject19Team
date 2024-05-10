@@ -1,13 +1,11 @@
 package com.example.javaproject19team.ReservationPackage;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.RoomPackage.RoomListener;
 import com.example.javaproject19team.СlientPackage.Client;
-import com.example.javaproject19team.СlientPackage.ClientListApp;
-import com.example.javaproject19team.СlientPackage.ClientListener;
-import com.example.javaproject19team.СlientPackage.ClientWindow;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +13,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 public class ReservationEditor extends Application {
     ReservationListener reservationListener;
@@ -69,7 +68,12 @@ public class ReservationEditor extends Application {
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
         GridPane.setConstraints(saveButton, 1, 4);
-        //saveButton.setOnAction(e -> saveReservation();
+        saveButton.setOnAction(e -> saveReservation(
+                clientComboBox.getValue(),
+                roomComboBox.getValue(),
+                datePickerArrival.getValue(),
+                datePickerDeparture.getValue()
+        ));
 
         grid.getChildren().addAll(dateLabelArrival, dateLabelDeparture, clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture, cancelButton, saveButton);
 
@@ -79,10 +83,18 @@ public class ReservationEditor extends Application {
     }
 
 
-    /*
-    Дописать
-    private void saveReservation(Client client, Room room, StringProperty arrivalDate, StringProperty departureDate, ) {}
-     */
+    private void saveReservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate) {
+        int clientIDDB = DatabaseHandler.getClientIDFromDB(client);
+        int roomIDDB = DatabaseHandler.getRoomIDFromDB(room);
+        java.sql.Date arrivalDateDB = java.sql.Date.valueOf(arrivalDate);
+        java.sql.Date departureDateDB = java.sql.Date.valueOf(departureDate);
+        boolean status = true;
+
+
+        DatabaseHandler.saveReservationDB(clientIDDB, roomIDDB, arrivalDateDB, departureDateDB, status);
+        Reservation newReservation = new Reservation(client, room, arrivalDate, departureDate,status);
+        reservationListener.onReservationSaved(newReservation);
+    }
 
 
     public void setReservationListener(ReservationListener listener) {

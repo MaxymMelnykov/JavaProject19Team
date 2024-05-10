@@ -1,7 +1,6 @@
 package com.example.javaproject19team.RoomPackage;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
-import com.example.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -81,9 +80,10 @@ public class RoomAdd extends Application {
         String typeDB = type.get();
         int priceDB = price.get();
         String detailsDB = details.get();
+        boolean status = false;
 
-        DatabaseHandler.saveRoom(numberDB, typeDB, priceDB, detailsDB);
-        Room newRoom = new Room(number, type, price, details);
+        DatabaseHandler.saveRoomDB(numberDB, typeDB, priceDB, detailsDB,status);
+        Room newRoom = new Room(number, type, price, details, status);
         roomListener.onRoomSaved(newRoom);
 
     }
