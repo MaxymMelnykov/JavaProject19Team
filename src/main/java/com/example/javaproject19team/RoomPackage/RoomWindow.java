@@ -1,4 +1,6 @@
+/* TODO снести класс
 package com.example.javaproject19team.RoomPackage;
+
 
 import com.example.javaproject19team.RoomPackage.RoomAdd;
 import com.example.javaproject19team.RoomPackage.RoomListApp;
@@ -66,3 +68,4 @@ public class RoomWindow extends Application{
         launch(args);
     }
 }
+*/

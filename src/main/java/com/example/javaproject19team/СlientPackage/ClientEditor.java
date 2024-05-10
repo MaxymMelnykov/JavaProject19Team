@@ -53,7 +53,7 @@ public class ClientEditor extends Application {
         GridPane.setConstraints(phoneInput, 1, 3);
 
         // Buttons
-        Button cancelButton = new Button("Скасувати");
+        Button cancelButton = new Button("Вийти");
         cancelButton.setOnAction(e -> primaryStage.close());
         GridPane.setConstraints(cancelButton, 0, 4);
 

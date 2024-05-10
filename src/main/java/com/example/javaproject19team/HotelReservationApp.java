@@ -8,8 +8,9 @@ import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.RoomPackage.RoomListener;
 import com.example.javaproject19team.RoomPackage.RoomWindow;
 import com.example.javaproject19team.СlientPackage.Client;
+import com.example.javaproject19team.СlientPackage.ClientListApp;
 import com.example.javaproject19team.СlientPackage.ClientListener;
-import com.example.javaproject19team.СlientPackage.ClientWindow;
+//import com.example.javaproject19team.СlientPackage.ClientWindow;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -27,8 +28,10 @@ public class HotelReservationApp extends Application implements ClientListener, 
     static ArrayList<Client> clients = new ArrayList<>();
     static ArrayList<Room> rooms = new ArrayList<>();
     static ArrayList<Reservation> reservations = new ArrayList<>();
+    public static Stage primaryStage;
     @Override
     public void start(Stage primaryStage) {
+        HotelReservationApp.primaryStage = primaryStage;
 
         primaryStage.setTitle("Головний екран");
         VBox mainContainer = new VBox();
@@ -95,10 +98,11 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
     private void showClients() {
         Stage clientsStage = new Stage();
-        ClientWindow clientWindow = new ClientWindow();
-        clientWindow.setClientListener(this);
+        ClientListApp clientListApp = new ClientListApp();
+        clientListApp.setClientListener(this);
+        ClientListApp.setHotelReservationStage(primaryStage); // Передаем ссылку на primaryStage HotelReservationApp
         try {
-            clientWindow.start(clientsStage);
+            clientListApp.start(clientsStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

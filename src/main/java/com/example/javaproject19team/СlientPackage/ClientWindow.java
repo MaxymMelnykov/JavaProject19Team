@@ -1,4 +1,4 @@
-package com.example.javaproject19team.СlientPackage;
+/* package com.example.javaproject19team.СlientPackage;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -66,4 +66,4 @@ public class ClientWindow extends Application{
     public static void main(String[] args) {
         launch(args);
     }
-}
+}*/

@@ -1,4 +1,6 @@
+/*TODO снести класс
 package com.example.javaproject19team.ReservationPackage;
+
 
 import com.example.javaproject19team.ReservationPackage.ReservationEditor;
 import com.example.javaproject19team.ReservationPackage.ReservationListApp;
@@ -64,3 +66,5 @@ public class ReservationWindow extends Application{
         launch(args);
     }
 }
+
+ */
