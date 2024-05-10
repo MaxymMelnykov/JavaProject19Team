@@ -5,8 +5,6 @@ import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,11 +14,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ReservationEditor extends Application {
+    ComboBox<Room> roomComboBox;
     ReservationListener reservationListener;
-    ObservableList<Room> roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getRooms());
+    ObservableList<Room> roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getFreeRooms());
     ObservableList<Client> clientsObservableList = FXCollections.observableArrayList(HotelReservationApp.getClients());
 
     @Override
@@ -34,10 +32,11 @@ public class ReservationEditor extends Application {
         grid.setHgap(10);
 
         Label dateLabelArrival = new Label("Дата заселення:");
-        GridPane.setConstraints(dateLabelArrival, 0, 2);
+        GridPane.setConstraints(dateLabelArrival, 0, 3);
 
         Label dateLabelDeparture = new Label("Дата виселення:");
-        GridPane.setConstraints(dateLabelDeparture, 0, 3);
+        GridPane.setConstraints(dateLabelDeparture, 0, 4);
+
 
         ComboBox<Client> clientComboBox = new ComboBox<>();
         clientComboBox.setPromptText("Виберіть клієнта");
@@ -46,28 +45,39 @@ public class ReservationEditor extends Application {
         GridPane.setColumnSpan(clientComboBox, 2);
         clientComboBox.setMinWidth(280);
 
-        ComboBox<Room> roomComboBox = new ComboBox<>();
-        roomComboBox.setPromptText("Виберіть номер");
-        roomComboBox.getItems().addAll(roomsObservableList);
-        GridPane.setConstraints(roomComboBox, 0, 1);
+        ComboBox<String> roomTypeComboBox = new ComboBox<>();
+        roomTypeComboBox.setPromptText("Выберите тип комнаты");
+        roomTypeComboBox.getItems().addAll("Одномісний", "Двомісний", "Багатовмісний");
+        GridPane.setConstraints(roomTypeComboBox, 0, 1);
+        GridPane.setColumnSpan(roomTypeComboBox, 2);
+        roomTypeComboBox.setMinWidth(280);
+
+        roomTypeComboBox.setOnAction(e -> {
+            String selectedType = roomTypeComboBox.getValue();
+            updateRoomList(selectedType);
+        });
+
+        roomComboBox = new ComboBox<>();
+        roomComboBox.setPromptText("Выберите номер");
+        GridPane.setConstraints(roomComboBox, 0, 2);
         GridPane.setColumnSpan(roomComboBox, 2);
         roomComboBox.setMinWidth(280);
 
         DatePicker datePickerArrival = new DatePicker();
-        GridPane.setConstraints(datePickerArrival, 1, 2);
+        GridPane.setConstraints(datePickerArrival, 1, 3);
 
         DatePicker datePickerDeparture = new DatePicker();
-        GridPane.setConstraints(datePickerDeparture, 1, 3);
+        GridPane.setConstraints(datePickerDeparture, 1, 4);
 
         Button cancelButton = new Button("Скасувати");
         cancelButton.setMinWidth(100);
         cancelButton.setOnAction(e -> primaryStage.close());
 
-        GridPane.setConstraints(cancelButton, 0, 4);
+        GridPane.setConstraints(cancelButton, 0, 5);
 
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
-        GridPane.setConstraints(saveButton, 1, 4);
+        GridPane.setConstraints(saveButton, 1, 5);
         saveButton.setOnAction(e -> saveReservation(
                 clientComboBox.getValue(),
                 roomComboBox.getValue(),
@@ -75,9 +85,9 @@ public class ReservationEditor extends Application {
                 datePickerDeparture.getValue()
         ));
 
-        grid.getChildren().addAll(dateLabelArrival, dateLabelDeparture, clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture, cancelButton, saveButton);
+        grid.getChildren().addAll(dateLabelArrival, dateLabelDeparture,roomTypeComboBox, clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture, cancelButton, saveButton);
 
-        Scene scene = new Scene(grid, 300, 190);
+        Scene scene = new Scene(grid, 300, 210);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -92,7 +102,7 @@ public class ReservationEditor extends Application {
 
 
         DatabaseHandler.saveReservationDB(clientIDDB, roomIDDB, arrivalDateDB, departureDateDB, status);
-        Reservation newReservation = new Reservation(client, room, arrivalDate, departureDate,status);
+        Reservation newReservation = new Reservation(client, room, arrivalDate, departureDate, status);
         reservationListener.onReservationSaved(newReservation);
     }
 
@@ -101,6 +111,24 @@ public class ReservationEditor extends Application {
         this.reservationListener = listener;
     }
 
+    private void updateRoomList(String selectedType) {
+        ObservableList<Room> roomsObservableList;
+        switch (selectedType) {
+            case "Одномісний":
+                roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getFreeSingleRooms());
+                break;
+            case "Двомісний":
+                roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getFreePairRooms());
+                break;
+            case "Багатовмісний":
+                roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getFreeMultiRooms());
+                break;
+            default:
+                roomsObservableList = FXCollections.observableArrayList();
+                break;
+        }
+        roomComboBox.setItems(roomsObservableList);
+    }
     public static void main(String[] args) {
         launch(args);
     }

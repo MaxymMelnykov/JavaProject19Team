@@ -7,12 +7,15 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
 
@@ -20,12 +23,22 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ReservationListApp extends Application {
+    private static Stage hotelReservationStage;
 
+    private ReservationListener reservationListener;
 
+    public static void setHotelReservationStage(Stage stage) {
+        hotelReservationStage = stage;
+    }
+
+    public void setReservationListener(ReservationListener reservationListener) {
+        this.reservationListener = reservationListener;
+    }
 
 
     @Override
     public void start(Stage primaryStage) {
+        hotelReservationStage.hide();
         TableView<Reservation> tableView;
         ObservableList<Reservation> reservations = FXCollections.observableArrayList(HotelReservationApp.getReservations());
 
@@ -35,6 +48,9 @@ public class ReservationListApp extends Application {
 
         TableColumn<Reservation, String> clientSurnameColumn = new TableColumn<>("Фамілія гостя");
         clientSurnameColumn.setCellValueFactory(data -> data.getValue().getClient().surnameProperty());
+
+        TableColumn<Reservation, String> roomColumn = new TableColumn<>("Номер");
+        roomColumn.setCellValueFactory(data -> data.getValue().getRoom().numberProperty());
 
         TableColumn<Reservation, LocalDate> arrivalDateColumn = new TableColumn<>("Дата початку резервації");
         arrivalDateColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalDate"));
@@ -50,40 +66,51 @@ public class ReservationListApp extends Application {
             String statusText = status ? "Активна" : "Не активна";
             return new SimpleStringProperty(statusText);
         });
+        tableView.getColumns().addAll(clientSurnameColumn,roomColumn, arrivalDateColumn, departureDateColumn, statusColumn);
 
-        tableView.getColumns().addAll(clientSurnameColumn, arrivalDateColumn, departureDateColumn, statusColumn);
+        Button addButton = new Button("Додати");
+        addButton.setOnAction(e -> {
+            showAddOrRemoveReservaions();
+        });
 
 
-        // Додамо контрольні елементи для фільтрації
-        DatePicker datePicker = new DatePicker();
-        datePicker.setPromptText("Виберіть дату");
+        Button refreshButton = new Button("Оновити");
+        refreshButton.setOnAction(e -> {
+            reservations.clear();
+            reservations.addAll(HotelReservationApp.getReservations());
+        });
+        Button onMainMenuButton = new Button("До головного меню");
+        onMainMenuButton.setOnAction(e -> {
+            primaryStage.hide();
+            HotelReservationApp.primaryStage.show();
+        });
+        GridPane.setConstraints(onMainMenuButton, 0, 4);
 
-        ComboBox<String> statusFilter = new ComboBox<>();
-        statusFilter.getItems().addAll("Всі", "Активні", "Не активні");
-        statusFilter.setValue("Всі");
+        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
+        buttonsBox.setSpacing(10);
+        buttonsBox.setPadding(new Insets(10));
 
-        Button filterButton = new Button("Фільтрувати");
-        //filterButton.setOnAction(e -> filterReservations(String.valueOf(datePicker.getValue()), statusFilter.getValue()));
-
-        BorderPane root = new BorderPane();
-        root.setTop(new HBox(datePicker, statusFilter, filterButton));
-        root.setCenter(tableView);
+        VBox root = new VBox(buttonsBox, tableView);
+        root.setSpacing(10);
+        root.setPadding(new Insets(10));
 
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    /*private void filterReservations(String selectedDate, String selectedStatus) {
-        ObservableList<Reservation> filteredList = FXCollections.observableArrayList();
-        for (Reservation reservation : reservations) {
-            if (("All".equals(selectedStatus) || reservation.getStatus().equals(selectedStatus)) &&
-                    (selectedDate == null || selectedDate.isEmpty() || reservation.getDate().equals(selectedDate))) {
-                filteredList.add(reservation);
-            }
+    private void showAddOrRemoveReservaions() {
+        Stage showAddOrRemoveReservaions = new Stage();
+        ReservationEditor reservationEditor = new ReservationEditor();
+        reservationEditor.setReservationListener(reservationListener);
+        try {
+            reservationEditor.start(showAddOrRemoveReservaions);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        tableView.setItems(filteredList);
-    }*/
+        System.out.println("Showing showRooms");
+    }
+
 
     public static void main(String[] args) {
         launch(args);

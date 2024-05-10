@@ -43,7 +43,7 @@ public class RoomAdd extends Application {
         GridPane.setConstraints(numberInput, 1, 0);
 
         ComboBox<String> typeInput = new ComboBox<>();
-        typeInput.getItems().addAll("Одномісний","Двомістний","Багатовмістний");
+        typeInput.getItems().addAll("Одномістний","Двомістний","Багатовмістний");
         GridPane.setConstraints(typeInput, 1, 1);
 
         TextField priceInput = new TextField();
@@ -80,7 +80,11 @@ public class RoomAdd extends Application {
         String typeDB = type.get();
         int priceDB = price.get();
         String detailsDB = details.get();
-        boolean status = false;
+        boolean status = true;
+
+        if (DatabaseHandler.isRoomOccupied(numberDB)) {
+            status = false; // Если комната уже занята, устанавливаем статус как занятый
+        }
 
         DatabaseHandler.saveRoomDB(numberDB, typeDB, priceDB, detailsDB,status);
         Room newRoom = new Room(number, type, price, details, status);

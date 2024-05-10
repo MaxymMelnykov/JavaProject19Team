@@ -8,10 +8,9 @@ public class Room {
     private final StringProperty type;
     private final IntegerProperty price;
     private final StringProperty details;
+    private boolean status; // True - Вільний / False - Зайнятий
 
-    private boolean status;
-
-    public Room(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details, boolean status) {
+    public Room(StringProperty number, StringProperty type, IntegerProperty price,StringProperty details, boolean status) {
         this.number = number;
         this.type = type;
         this.price = price;

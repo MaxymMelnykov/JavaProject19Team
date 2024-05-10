@@ -1,5 +1,6 @@
 package com.example.javaproject19team.ReservationPackage;
 
+import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,6 +8,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Reservation {
     private Client client;
@@ -21,6 +23,26 @@ public class Reservation {
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.status = status;
+
+        switch (room.getType()){
+            case "Одномістний":
+                DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                room.setStatus(false);
+            case "Двомістний":
+                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 2)) {
+                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    room.setStatus(false);
+                }
+                    break;
+            case "Багатовмістний":
+                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 5)) {
+                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    room.setStatus(false);
+                }
+                    break;
+            default:
+                room.setStatus(true);
+        }
     }
 
     public void setArrivalDate(LocalDate arrivalDate) {

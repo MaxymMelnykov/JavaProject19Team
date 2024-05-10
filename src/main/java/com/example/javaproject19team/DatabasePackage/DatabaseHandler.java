@@ -1,6 +1,5 @@
 package com.example.javaproject19team.DatabasePackage;
 
-import com.example.javaproject19team.HotelReservationApp;
 import com.example.javaproject19team.ReservationPackage.Reservation;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 public class DatabaseHandler {
     private static final String INSERT_CLIENT_SQL = "INSERT INTO Clients (name, surname, email, phone) VALUES (?, ?, ?, ?)";
     private static final String INSERT_ROOM_SQL = "INSERT INTO Rooms (number, type, price, details, roomStatus) VALUES (?, ?, ?, ?,?)";
-    private static final String INSERT_RESERVATION_SQL = "INSERT INTO Reservations (roomid, clientid, arrivaldate, departuredate,reservationstatus) VALUES (?, ?, ?, ?,?)";
+    private static final String INSERT_RESERVATION_SQL = "INSERT INTO Reservations (clientid, roomid, arrivaldate, departuredate,reservationstatus) VALUES (?, ?, ?, ?,?)";
     private static final String SELECT_ID_FROM_CLIENTS_SQL = "SELECT ClientID FROM Clients where name = ? and surname = ? and email = ? and phone = ?";
     private static final String SELECT_ID_FROM_ROOMS_SQL = "SELECT roomid FROM Rooms where number = ? and type = ? and price = ? and details = ?";
     private static final String SELECT_CLIENT_SQL = "SELECT * FROM Clients WHERE clientID = ?";
@@ -24,7 +23,27 @@ public class DatabaseHandler {
     private static final String SELECT_COUNT_ALL_CLIENTS_SQL = "SELECT COUNT(*) FROM clients";
     private static final String SELECT_COUNT_ALL_ROOMS_SQL = "SELECT COUNT(*) FROM Rooms";
     private static final String SELECT_COUNT_ALL_RESERVATIONS_SQL = "SELECT COUNT(*) FROM Reservations";
-    private static final String SELECT_CLIENT_ID_FROM_RESERVATION_SQL = "SELECT ClientID From Reservations where ReservationID = ?";
+    private static final String SELECT_COUNT_ROOMS_RESERVATION_SQL = "SELECT COUNT(*) FROM Reservations WHERE roomID = ?";
+    private static final String SELECT_ROOM_STATUS_SQL = "SELECT roomstatus FROM Rooms WHERE number = ?";
+    private static final String UPDATE_STATUS_RESERVATIONS_SQL = "UPDATE Rooms SET roomStatus = false where number = ?";
+
+
+    public static int countRoomsReservations(final int roomID) {
+        int counter = 0;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_COUNT_ROOMS_RESERVATION_SQL)) {
+            preparedStatement.setInt(1, roomID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    counter = resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return counter;
+    }
+
 
     public static int countRoomsFromDB() {
         int counter = 0;
@@ -108,7 +127,6 @@ public class DatabaseHandler {
             preparedStatement.setDate(4, departureDate);
             preparedStatement.setBoolean(5, status);
             preparedStatement.executeUpdate();
-            //TODO это
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -225,6 +243,32 @@ public class DatabaseHandler {
         }
         return ID;
     }
+    public static boolean isRoomOccupied(String roomNumber) {
+        boolean isOccupied = false;
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ROOM_STATUS_SQL)) {
+            preparedStatement.setString(1, roomNumber);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    isOccupied = resultSet.getBoolean("roomStatus");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return isOccupied;
+    }
+
+    public static void updateStatusReservationsSql(String number) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_RESERVATIONS_SQL)) {
+            preparedStatement.setString(1, number);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 }
