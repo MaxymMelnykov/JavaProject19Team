@@ -18,7 +18,6 @@ import java.time.LocalDate;
 public class ReservationEditor extends Application {
     ComboBox<Room> roomComboBox;
     ReservationListener reservationListener;
-    ObservableList<Room> roomsObservableList = FXCollections.observableArrayList(HotelReservationApp.getFreeRooms());
     ObservableList<Client> clientsObservableList = FXCollections.observableArrayList(HotelReservationApp.getClients());
 
     @Override
@@ -72,7 +71,8 @@ public class ReservationEditor extends Application {
         Button cancelButton = new Button("Скасувати");
         cancelButton.setMinWidth(100);
         cancelButton.setOnAction(e -> primaryStage.close());
-
+        cancelButton.setId("cancel-button");
+        GridPane.setMargin(cancelButton, new Insets(0,0 , 0, 30));
         GridPane.setConstraints(cancelButton, 0, 5);
 
         Button saveButton = new Button("Зберегти");
@@ -86,8 +86,8 @@ public class ReservationEditor extends Application {
         ));
 
         grid.getChildren().addAll(dateLabelArrival, dateLabelDeparture,roomTypeComboBox, clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture, cancelButton, saveButton);
-
-        Scene scene = new Scene(grid, 300, 210);
+        Scene scene = new Scene(grid, 300, 240);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

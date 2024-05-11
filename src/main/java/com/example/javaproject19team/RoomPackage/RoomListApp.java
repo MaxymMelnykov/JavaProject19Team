@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -81,7 +82,44 @@ public class RoomListApp extends Application {
         buttonsBox.setSpacing(10);
         buttonsBox.setPadding(new Insets(10));
 
-        VBox root = new VBox(buttonsBox, tableView);
+
+        TextField filterField = new TextField();
+        filterField.setPromptText("Пошук...");
+        filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String filter = newValue.toLowerCase();
+            tableView.setItems(rooms.filtered(room ->
+                    room.getNumber().toLowerCase().contains(filter) ||
+                            room.getType().toLowerCase().contains(filter) ||
+                            room.getDetails().toLowerCase().contains(filter)
+            ));
+        });
+
+        TextField minPriceField = new TextField();
+        minPriceField.setPromptText("Минимальная цена");
+
+        TextField maxPriceField = new TextField();
+        maxPriceField.setPromptText("Максимальная цена");
+
+        Button filterButton = new Button("Фільтрувати");
+
+        filterButton.setOnAction(event -> {
+            String filter = filterField.getText().toLowerCase();
+            double minPrice = minPriceField.getText().isEmpty() ? 0 : Double.parseDouble(minPriceField.getText());
+            double maxPrice = maxPriceField.getText().isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxPriceField.getText());
+            tableView.setItems(rooms.filtered(room ->
+                    (room.getNumber().toLowerCase().contains(filter) ||
+                            room.getType().toLowerCase().contains(filter) ||
+                            room.getDetails().toLowerCase().contains(filter)) &&
+                            room.getPrice() >= minPrice && room.getPrice() <= maxPrice
+            ));
+        });
+
+
+        HBox priceFilterBox = new HBox(minPriceField,maxPriceField,filterButton);
+        priceFilterBox.setSpacing(10);
+        priceFilterBox.setPadding(new Insets(10));
+
+        VBox root = new VBox(filterField,priceFilterBox,buttonsBox, tableView);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 

@@ -25,7 +25,8 @@ public class DatabaseHandler {
     private static final String SELECT_COUNT_ALL_RESERVATIONS_SQL = "SELECT COUNT(*) FROM Reservations";
     private static final String SELECT_COUNT_ROOMS_RESERVATION_SQL = "SELECT COUNT(*) FROM Reservations WHERE roomID = ?";
     private static final String SELECT_ROOM_STATUS_SQL = "SELECT roomstatus FROM Rooms WHERE number = ?";
-    private static final String UPDATE_STATUS_RESERVATIONS_SQL = "UPDATE Rooms SET roomStatus = false where number = ?";
+    private static final String UPDATE_STATUS_ROOMS_TO_FALSE_SQL = "UPDATE Rooms SET roomStatus = false where number = ?";
+    private static final String UPDATE_STATUS_RESERVATIONS_TO_FALSE_SQL = "UPDATE Reservations SET reservationStatus = false where ClientID = ?";
 
 
     public static int countRoomsReservations(final int roomID) {
@@ -259,10 +260,19 @@ public class DatabaseHandler {
         return isOccupied;
     }
 
-    public static void updateStatusReservationsSql(String number) {
+    public static void UpdateStatusRoomToFalseDB(String number) {
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_RESERVATIONS_SQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_ROOMS_TO_FALSE_SQL)) {
             preparedStatement.setString(1, number);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void UpdateStatusReservationToFalseDB(int ClientID) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_RESERVATIONS_TO_FALSE_SQL)) {
+            preparedStatement.setInt(1, ClientID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

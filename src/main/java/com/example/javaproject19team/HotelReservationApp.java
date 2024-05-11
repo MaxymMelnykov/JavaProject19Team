@@ -4,27 +4,24 @@ import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.ReservationPackage.Reservation;
 import com.example.javaproject19team.ReservationPackage.ReservationListApp;
 import com.example.javaproject19team.ReservationPackage.ReservationListener;
-//import com.example.javaproject19team.ReservationPackage.ReservationWindow;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.RoomPackage.RoomListApp;
 import com.example.javaproject19team.RoomPackage.RoomListener;
-//import com.example.javaproject19team.RoomPackage.RoomWindow;
 import com.example.javaproject19team.СlientPackage.Client;
 import com.example.javaproject19team.СlientPackage.ClientListApp;
 import com.example.javaproject19team.СlientPackage.ClientListener;
-//import com.example.javaproject19team.СlientPackage.ClientWindow;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 public class HotelReservationApp extends Application implements ClientListener, RoomListener, ReservationListener {
@@ -32,9 +29,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
     static ArrayList<Room> rooms = new ArrayList<>();
     static ArrayList<Reservation> reservations = new ArrayList<>();
     public static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
+
         HotelReservationApp.primaryStage = primaryStage;
+        HotelReservationApp.primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
         primaryStage.setTitle("Головний екран");
         VBox mainContainer = new VBox();
@@ -223,12 +223,25 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return reservations;
     }
 
+    private static void updateReservationStatus() {
+        getReservationsFromDB();
+        for (Reservation reservation : reservations) {
+            System.out.println("ЭТО РЕЗУЛЬТАТ ПРОВЕРКИ: " + reservation.getDepartureDate().isBefore(LocalDate.now()));
+            if (reservation.getDepartureDate().isBefore(LocalDate.now())) {
+                reservation.setStatus(false);
+                DatabaseHandler.UpdateStatusReservationToFalseDB(DatabaseHandler.getClientIDFromDB(reservation.getClient()));
+                System.out.println("ЭТО РЕЗУЛЬТАТ ПРОВЕРКИ: " + reservation.getDepartureDate().isBefore(LocalDate.now()));
+                System.out.println("ЭТО КЛИЕНТ ID: " +DatabaseHandler.getClientIDFromDB(reservation.getClient()));
+                System.out.println("ЭТО СТАТУС: " + reservation.isStatus());
+            }
+        }
+    }
 
     public static void main(String[] args) {
-
+        updateReservationStatus();
         getClientsFromDB();
         getRoomsFromDB();
-        getReservationsFromDB();
         launch(args);
     }
+
 }

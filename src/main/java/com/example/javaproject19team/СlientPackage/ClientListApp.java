@@ -73,7 +73,19 @@ public class ClientListApp extends Application implements ClientListener {
         buttonsBox.setSpacing(10);
         buttonsBox.setPadding(new Insets(10));
 
-        VBox root = new VBox(buttonsBox, tableView);
+        TextField filterField = new TextField();
+        filterField.setPromptText("Пошук...");
+        filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String filter = newValue.toLowerCase();
+            tableView.setItems(clientsObs.filtered(client ->
+                    client.getName().toLowerCase().contains(filter) ||
+                            client.getSurname().toLowerCase().contains(filter) ||
+                            client.getEmail().toLowerCase().contains(filter) ||
+                            client.getPhone().toLowerCase().contains(filter)
+            ));
+        });
+
+        VBox root = new VBox(buttonsBox, filterField, tableView);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 

@@ -3,12 +3,8 @@ package com.example.javaproject19team.ReservationPackage;
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.RoomPackage.Room;
 import com.example.javaproject19team.СlientPackage.Client;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Reservation {
     private Client client;
@@ -22,21 +18,21 @@ public class Reservation {
         this.room = room;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-        this.status = status;
-
+        this.status = status; // True - Активна / False - Не активна
+        System.out.println(status);
         switch (room.getType()){
             case "Одномістний":
-                DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                 room.setStatus(false);
             case "Двомістний":
                 if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 2)) {
-                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                     room.setStatus(false);
                 }
                     break;
             case "Багатовмістний":
                 if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 5)) {
-                    DatabaseHandler.updateStatusReservationsSql(room.getNumber());
+                    DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                     room.setStatus(false);
                 }
                     break;

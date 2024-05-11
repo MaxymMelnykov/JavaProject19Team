@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,8 +19,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
+import org.w3c.dom.Text;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReservationListApp extends Application {
@@ -73,7 +76,6 @@ public class ReservationListApp extends Application {
             showAddOrRemoveReservaions();
         });
 
-
         Button refreshButton = new Button("Оновити");
         refreshButton.setOnAction(e -> {
             reservations.clear();
@@ -84,13 +86,39 @@ public class ReservationListApp extends Application {
             primaryStage.hide();
             HotelReservationApp.primaryStage.show();
         });
+
+        Button printButton = new Button("Печать");
+        printButton.setOnAction(event -> {
+            Reservation selectedReservation = tableView.getSelectionModel().getSelectedItem();
+            if (selectedReservation != null) {
+                printReservationInfo(selectedReservation);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Печать");
+                alert.setHeaderText("Ничего не выбрано");
+                alert.setContentText("Пожалуйста, выберите резервацию для печати.");
+                alert.showAndWait();
+            }
+        });
+
+
         GridPane.setConstraints(onMainMenuButton, 0, 4);
 
-        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
+        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton,printButton);
         buttonsBox.setSpacing(10);
         buttonsBox.setPadding(new Insets(10));
 
-        VBox root = new VBox(buttonsBox, tableView);
+        TextField filterField = new TextField();
+        filterField.setPromptText("Пошук...");
+        filterField.textProperty().addListener((observable, oldValue, newValue) -> {
+            String filter = newValue.toLowerCase();
+            tableView.setItems(reservations.filtered(reservation ->
+                    reservation.getClient().getSurname().toLowerCase().contains(filter) ||
+                            reservation.getRoom().getNumber().toLowerCase().contains(filter)
+            ));
+        });
+
+        VBox root = new VBox(buttonsBox,filterField, tableView);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
@@ -110,6 +138,49 @@ public class ReservationListApp extends Application {
         }
         System.out.println("Showing showRooms");
     }
+
+
+
+    private void printReservationInfo(Reservation reservation) {
+        // Создание объектов Label для каждой строки информации
+        Label clientLabel = new Label("Клиент: " + reservation.getClient().getName() + " " + reservation.getClient().getSurname());
+        Label roomLabel = new Label("Номер комнаты: " + reservation.getRoom().getNumber());
+        Label arrivalLabel = new Label("Дата заезда: " + reservation.getArrivalDate());
+        Label departureLabel = new Label("Дата выезда: " + reservation.getDepartureDate());
+
+        // Создание объекта VBox и добавление в него объектов Label
+        VBox reservationVBox = new VBox();
+        reservationVBox.getChildren().addAll(clientLabel, roomLabel, arrivalLabel, departureLabel);
+
+        // Создание объекта PrinterJob для печати
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        if (printerJob != null) {
+            boolean printDialogResult = printerJob.showPrintDialog(null); // Отображение диалога печати
+            if (printDialogResult) {
+                // Печать содержимого
+                boolean printResult = printerJob.printPage(reservationVBox); // Печать объекта VBox
+                if (printResult) {
+                    printerJob.endJob(); // Завершение задания печати
+                } else {
+                    // Если печать не удалась, отобразите сообщение об ошибке
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Ошибка печати");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Печать не удалась. Пожалуйста, попробуйте еще раз.");
+                    alert.showAndWait();
+                }
+            }
+        } else {
+            // Если не удалось создать объект PrinterJob, выведите сообщение об ошибке
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка печати");
+            alert.setHeaderText(null);
+            alert.setContentText("Не удалось инициализировать задание печати. Пожалуйста, попробуйте еще раз.");
+            alert.showAndWait();
+        }
+    }
+
+
 
 
     public static void main(String[] args) {
