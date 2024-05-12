@@ -5,16 +5,16 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-
-public class ClientListApp extends Application implements ClientListener {
+public class ClientList extends Application implements ClientListener {
     private static Stage hotelReservationStage;
     private TableView<Client> tableView;
     private ObservableList<Client> clientsObs = FXCollections.observableArrayList();
@@ -30,7 +30,7 @@ public class ClientListApp extends Application implements ClientListener {
     @Override
     public void start(Stage primaryStage) {
         hotelReservationStage.hide();
-
+        primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
         primaryStage.setTitle("Список клієнтів");
 
         clientsObs.addAll(HotelReservationApp.getClients());
@@ -55,23 +55,35 @@ public class ClientListApp extends Application implements ClientListener {
         addButton.setOnAction(e -> {
             showAddOrRemoveClients();
         });
-
+        addButton.setId("menu-button");
+        addButton.setFocusTraversable(false);
+        addButton.setMinWidth(163);
 
         Button refreshButton = new Button("Оновити");
         refreshButton.setOnAction(e -> {
             clientsObs.clear();
             clientsObs.addAll(HotelReservationApp.getClients());
         });
+        refreshButton.setId("menu-button");
+        refreshButton.setFocusTraversable(false);
+        refreshButton.setMinWidth(163);
+
+
         Button onMainMenuButton = new Button("До головного меню");
         onMainMenuButton.setOnAction(e -> {
             primaryStage.hide();
             HotelReservationApp.primaryStage.show();
         });
         GridPane.setConstraints(onMainMenuButton, 0, 4);
+        onMainMenuButton.setId("menu-button");
+        onMainMenuButton.setFocusTraversable(false);
+        onMainMenuButton.setMinWidth(166);
+
 
         HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
-        buttonsBox.setSpacing(10);
-        buttonsBox.setPadding(new Insets(10));
+
+        VBox filterBox = new VBox();
+        Label filterText = new Label("Фільтрація за інформацією про клієнта");
 
         TextField filterField = new TextField();
         filterField.setPromptText("Пошук...");
@@ -84,12 +96,16 @@ public class ClientListApp extends Application implements ClientListener {
                             client.getPhone().toLowerCase().contains(filter)
             ));
         });
+        filterField.setMaxWidth(470);
 
-        VBox root = new VBox(buttonsBox, filterField, tableView);
+        filterBox.setAlignment(Pos.CENTER);
+        filterBox.getChildren().addAll(filterText,filterField);
+
+        VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);
-        root.setPadding(new Insets(10));
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 490, 500);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

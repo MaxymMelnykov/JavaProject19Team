@@ -11,15 +11,17 @@ public class Reservation {
     private Room room;
     private LocalDate arrivalDate;
     private LocalDate departureDate;
-    private boolean status; //Убрать?
-    //TODO сделать так чтоб статус менялся когда проходило время сьема номера
+    private boolean status;
     public Reservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate, boolean status) {
         this.client = client;
         this.room = room;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.status = status; // True - Активна / False - Не активна
-        System.out.println(status);
+        /*
+        Такий конструктор потрібен для того, щоб змінювати статус номеру, коли в неї додається людина
+        Наприклад: В одномістній кімнаті може жити лише одна людина, тому при створенні резервації, ми змінюємо статус кімнати
+         */
         switch (room.getType()){
             case "Одномістний":
                 DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
@@ -41,29 +43,13 @@ public class Reservation {
         }
     }
 
-    public void setArrivalDate(LocalDate arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-
-    public void setDepartureDate(LocalDate departureDate) {
-        this.departureDate = departureDate;
-    }
 
     public Client getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     public Room getRoom() {
         return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
 

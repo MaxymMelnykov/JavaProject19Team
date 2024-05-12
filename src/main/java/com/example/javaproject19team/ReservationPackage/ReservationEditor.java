@@ -8,9 +8,13 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
@@ -23,61 +27,50 @@ public class ReservationEditor extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setTitle("Reservation Editor");
-
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10));
-        grid.setVgap(8);
-        grid.setHgap(10);
-
-        Label dateLabelArrival = new Label("Дата заселення:");
-        GridPane.setConstraints(dateLabelArrival, 0, 3);
-
-        Label dateLabelDeparture = new Label("Дата виселення:");
-        GridPane.setConstraints(dateLabelDeparture, 0, 4);
-
+        primaryStage.setTitle("Додавання нової резервації");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
         ComboBox<Client> clientComboBox = new ComboBox<>();
         clientComboBox.setPromptText("Виберіть клієнта");
         clientComboBox.getItems().addAll(clientsObservableList);
-        GridPane.setConstraints(clientComboBox, 0, 0);
-        GridPane.setColumnSpan(clientComboBox, 2);
         clientComboBox.setMinWidth(280);
 
         ComboBox<String> roomTypeComboBox = new ComboBox<>();
-        roomTypeComboBox.setPromptText("Выберите тип комнаты");
+        roomTypeComboBox.setPromptText("Виберіть тип номеру");
         roomTypeComboBox.getItems().addAll("Одномісний", "Двомісний", "Багатовмісний");
-        GridPane.setConstraints(roomTypeComboBox, 0, 1);
-        GridPane.setColumnSpan(roomTypeComboBox, 2);
         roomTypeComboBox.setMinWidth(280);
-
         roomTypeComboBox.setOnAction(e -> {
             String selectedType = roomTypeComboBox.getValue();
             updateRoomList(selectedType);
         });
 
         roomComboBox = new ComboBox<>();
-        roomComboBox.setPromptText("Выберите номер");
-        GridPane.setConstraints(roomComboBox, 0, 2);
-        GridPane.setColumnSpan(roomComboBox, 2);
+        roomComboBox.setPromptText("Виберіть номер");
         roomComboBox.setMinWidth(280);
 
+
+        Label dateLabelArrival = new Label("Дата заселення:");
         DatePicker datePickerArrival = new DatePicker();
-        GridPane.setConstraints(datePickerArrival, 1, 3);
+        datePickerArrival.setMaxWidth(150);
+        HBox arrivalHBox = new HBox(dateLabelArrival,datePickerArrival);
+        arrivalHBox.setAlignment(Pos.CENTER);
+        arrivalHBox.setSpacing(5);
 
+        Label dateLabelDeparture = new Label("Дата виселення:");
         DatePicker datePickerDeparture = new DatePicker();
-        GridPane.setConstraints(datePickerDeparture, 1, 4);
+        datePickerDeparture.setMaxWidth(150);
+        HBox departureHBox = new HBox(dateLabelDeparture,datePickerDeparture);
+        departureHBox.setAlignment(Pos.CENTER);
+        departureHBox.setSpacing(5);
 
-        Button cancelButton = new Button("Скасувати");
+        Button cancelButton = new Button("Вийти");
         cancelButton.setMinWidth(100);
         cancelButton.setOnAction(e -> primaryStage.close());
         cancelButton.setId("cancel-button");
-        GridPane.setMargin(cancelButton, new Insets(0,0 , 0, 30));
-        GridPane.setConstraints(cancelButton, 0, 5);
+
 
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
-        GridPane.setConstraints(saveButton, 1, 5);
         saveButton.setOnAction(e -> saveReservation(
                 clientComboBox.getValue(),
                 roomComboBox.getValue(),
@@ -85,8 +78,16 @@ public class ReservationEditor extends Application {
                 datePickerDeparture.getValue()
         ));
 
-        grid.getChildren().addAll(dateLabelArrival, dateLabelDeparture,roomTypeComboBox, clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture, cancelButton, saveButton);
-        Scene scene = new Scene(grid, 300, 240);
+        HBox buttonHbox = new HBox(cancelButton,saveButton);
+        buttonHbox.setSpacing(80);
+        saveButton.setId("save-button");
+
+
+        VBox root = new VBox(clientComboBox,roomTypeComboBox,roomComboBox,arrivalHBox,departureHBox,buttonHbox);
+        root.setSpacing(10);
+        root.setPadding(new Insets(10));
+
+        Scene scene = new Scene(root, 300, 255);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();

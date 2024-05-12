@@ -2,16 +2,17 @@ package com.example.javaproject19team;
 
 import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
 import com.example.javaproject19team.ReservationPackage.Reservation;
-import com.example.javaproject19team.ReservationPackage.ReservationListApp;
+import com.example.javaproject19team.ReservationPackage.ReservationList;
 import com.example.javaproject19team.ReservationPackage.ReservationListener;
 import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.RoomPackage.RoomListApp;
+import com.example.javaproject19team.RoomPackage.RoomList;
 import com.example.javaproject19team.RoomPackage.RoomListener;
 import com.example.javaproject19team.СlientPackage.Client;
-import com.example.javaproject19team.СlientPackage.ClientListApp;
+import com.example.javaproject19team.СlientPackage.ClientList;
 import com.example.javaproject19team.СlientPackage.ClientListener;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,46 +38,49 @@ public class HotelReservationApp extends Application implements ClientListener, 
         HotelReservationApp.primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
         primaryStage.setTitle("Головний екран");
-        VBox mainContainer = new VBox();
-        mainContainer.setPadding(new Insets(10));
-        mainContainer.setSpacing(10);
 
-        HBox buttonsBox = new HBox();
-        buttonsBox.setSpacing(10);
-        buttonsBox.setPadding(new Insets(10, 10, 10, 10));
+
 
         Button reservationsButton = new Button("Резервації");
-        reservationsButton.setMinWidth(100);
+        reservationsButton.setMinWidth(160);
+        reservationsButton.setMinHeight(50);
+        reservationsButton.setId("menu-button");
+        reservationsButton.setFocusTraversable(false);
+        reservationsButton.setStyle("-fx-font-size: 24px;");
         reservationsButton.setOnAction(e -> showReservations());
 
         Button clientsButton = new Button("Клієнти");
-        clientsButton.setMinWidth(100);
+        clientsButton.setMinWidth(160);
+        clientsButton.setMinHeight(50);
+        clientsButton.setFocusTraversable(false);
+        clientsButton.setStyle("-fx-font-size: 24px;");
+        clientsButton.setId("menu-button");
         clientsButton.setOnAction(e -> showClients());
 
         Button roomsButton = new Button("Номери");
-        roomsButton.setMinWidth(100);
+        roomsButton.setMinWidth(160);
+        roomsButton.setMinHeight(50);
+        roomsButton.setFocusTraversable(false);
+        roomsButton.setStyle("-fx-font-size: 24px;");
+        roomsButton.setId("menu-button");
         roomsButton.setOnAction(e -> showRooms());
 
-        buttonsBox.getChildren().addAll(reservationsButton, clientsButton, roomsButton);
+        HBox buttonHBox = new HBox(clientsButton,reservationsButton,roomsButton);
+        buttonHBox.setAlignment(Pos.CENTER);
 
 
-        HBox typeRoomBox = new HBox();
-        typeRoomBox.setSpacing(10);
+        Label reservedRoomsLabel = new Label("Кількість зайнятих номерів : "  + (rooms.size() - getFreeRooms().size()));
+        Label unreservedRoomsLabel = new Label("Кількість доступних номерів : " + getFreeRooms().size());
 
-        HBox reservedRoomsNumberBox = new HBox();
-        reservedRoomsNumberBox.setSpacing(10);
-        Label reservedRoomsLabel = new Label("Кількість зайнятих номерів :      "  + (rooms.size() - getFreeRooms().size()));
-        reservedRoomsNumberBox.getChildren().addAll(reservedRoomsLabel);
+        VBox roominfoVBox = new VBox(reservedRoomsLabel,unreservedRoomsLabel);
+        roominfoVBox.setAlignment(Pos.CENTER);
+        roominfoVBox.setSpacing(10);
 
+        VBox root = new VBox(buttonHBox,roominfoVBox);
+        root.setSpacing(10);
 
-        HBox unreservedRoomsNumberBox = new HBox();
-        unreservedRoomsNumberBox.setSpacing(10);
-        Label unreservedRoomsLabel = new Label("Кількість доступних номерів :      " + getFreeRooms().size());
-        unreservedRoomsNumberBox.getChildren().addAll(unreservedRoomsLabel);
-
-        mainContainer.getChildren().addAll(buttonsBox, typeRoomBox, reservedRoomsNumberBox, unreservedRoomsNumberBox);
-
-        Scene scene = new Scene(mainContainer, 360, 150);
+        Scene scene = new Scene(root, 480, 120);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -84,59 +88,52 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
     private void showReservations() {
         Stage reservationStage = new Stage();
-        ReservationListApp reservationListApp = new ReservationListApp();
-        reservationListApp.setReservationListener(this);
-        ReservationListApp.setHotelReservationStage(primaryStage);
+        ReservationList reservationList = new ReservationList();
+        reservationList.setReservationListener(this);
+        ReservationList.setHotelReservationStage(primaryStage);
         try {
-            reservationListApp.start(reservationStage);
+            reservationList.start(reservationStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Showing Reservations");
     }
 
 
     private void showClients() {
         Stage clientsStage = new Stage();
-        ClientListApp clientListApp = new ClientListApp();
-        clientListApp.setClientListener(this);
-        ClientListApp.setHotelReservationStage(primaryStage); // Передаем ссылку на primaryStage HotelReservationApp
+        ClientList clientList = new ClientList();
+        clientList.setClientListener(this);
+        ClientList.setHotelReservationStage(primaryStage); // Передаем ссылку на primaryStage HotelReservationApp
         try {
-            clientListApp.start(clientsStage);
+            clientList.start(clientsStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Showing Clients");
     }
 
 
     private void showRooms() {
         Stage roomStage = new Stage();
-        RoomListApp roomListApp = new RoomListApp();
-        roomListApp.setRoomListener(this);
-        RoomListApp.setHotelReservationStage(primaryStage);
+        RoomList roomList = new RoomList();
+        roomList.setRoomListener(this);
+        RoomList.setHotelReservationStage(primaryStage);
         try {
-            roomListApp.start(roomStage);
+            roomList.start(roomStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Showing Rooms");
     }
 
     @Override
     public void onClientSaved(Client client) {
         clients.add(client);
-        System.out.println(clients.get(0).getName());
-        System.out.println(DatabaseHandler.countClientsFromDB());
     }
     @Override
     public void onRoomSaved(Room room) {
         rooms.add(room);
-        System.out.println(rooms.get(0).getNumber());
     }
     public void onReservationSaved(Reservation reservation){
         reservations.add(reservation);
-        System.out.println(reservations.get(0).getArrivalDate());
     }
 
     public static void getClientsFromDB(){
@@ -226,13 +223,9 @@ public class HotelReservationApp extends Application implements ClientListener, 
     private static void updateReservationStatus() {
         getReservationsFromDB();
         for (Reservation reservation : reservations) {
-            System.out.println("ЭТО РЕЗУЛЬТАТ ПРОВЕРКИ: " + reservation.getDepartureDate().isBefore(LocalDate.now()));
             if (reservation.getDepartureDate().isBefore(LocalDate.now())) {
                 reservation.setStatus(false);
                 DatabaseHandler.UpdateStatusReservationToFalseDB(DatabaseHandler.getClientIDFromDB(reservation.getClient()));
-                System.out.println("ЭТО РЕЗУЛЬТАТ ПРОВЕРКИ: " + reservation.getDepartureDate().isBefore(LocalDate.now()));
-                System.out.println("ЭТО КЛИЕНТ ID: " +DatabaseHandler.getClientIDFromDB(reservation.getClient()));
-                System.out.println("ЭТО СТАТУС: " + reservation.isStatus());
             }
         }
     }

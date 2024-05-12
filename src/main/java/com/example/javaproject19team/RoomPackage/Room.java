@@ -17,7 +17,6 @@ public class Room {
         this.details = details;
         this.status = status;
     }
-//TODO сделать так чтоб статус менялся когда проходило время сьема номера
     public boolean isStatus() {
         return status;
     }

@@ -12,9 +12,11 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class DatabaseHandler {
+
+    // Запити до БД
     private static final String INSERT_CLIENT_SQL = "INSERT INTO Clients (name, surname, email, phone) VALUES (?, ?, ?, ?)";
-    private static final String INSERT_ROOM_SQL = "INSERT INTO Rooms (number, type, price, details, roomStatus) VALUES (?, ?, ?, ?,?)";
-    private static final String INSERT_RESERVATION_SQL = "INSERT INTO Reservations (clientid, roomid, arrivaldate, departuredate,reservationstatus) VALUES (?, ?, ?, ?,?)";
+    private static final String INSERT_ROOM_SQL = "INSERT INTO Rooms (number, type, price, details, roomStatus) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_RESERVATION_SQL = "INSERT INTO Reservations (clientid, roomid, arrivaldate, departuredate,reservationstatus) VALUES (?, ?, ?, ?, ?)";
     private static final String SELECT_ID_FROM_CLIENTS_SQL = "SELECT ClientID FROM Clients where name = ? and surname = ? and email = ? and phone = ?";
     private static final String SELECT_ID_FROM_ROOMS_SQL = "SELECT roomid FROM Rooms where number = ? and type = ? and price = ? and details = ?";
     private static final String SELECT_CLIENT_SQL = "SELECT * FROM Clients WHERE clientID = ?";
@@ -28,7 +30,7 @@ public class DatabaseHandler {
     private static final String UPDATE_STATUS_ROOMS_TO_FALSE_SQL = "UPDATE Rooms SET roomStatus = false where number = ?";
     private static final String UPDATE_STATUS_RESERVATIONS_TO_FALSE_SQL = "UPDATE Reservations SET reservationStatus = false where ClientID = ?";
 
-
+    // Методи для рахунку клієнтів, номерів та резервацій
     public static int countRoomsReservations(final int roomID) {
         int counter = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -44,7 +46,6 @@ public class DatabaseHandler {
         }
         return counter;
     }
-
 
     public static int countRoomsFromDB() {
         int counter = 0;
@@ -88,7 +89,7 @@ public class DatabaseHandler {
         return counter;
     }
 
-
+    // Методи для запису данних про клієнтів, номерів та резервацій до БД
     public static void saveClientDB(String clientName, String clientSurname, String email, String phone) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT_SQL)) {
@@ -133,6 +134,7 @@ public class DatabaseHandler {
         }
     }
 
+    // Методи для отримання клієнтів, номерів та резервацій з БД
     public static Client getClientFromDB(int ClientID) {
         Client client = null;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -205,8 +207,7 @@ public class DatabaseHandler {
         return reservation;
     }
 
-
-
+    // Методи для отримання ID клієнта з БД
     public static int getClientIDFromDB(Client client) {
         int ID = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -244,6 +245,10 @@ public class DatabaseHandler {
         }
         return ID;
     }
+    /*Метод для перевірки, чи в БД кімната зайнята(потрібно для конструктора в Reservations,
+    щоб, наприклад, якщо кімната була одномістна і до неї додавався новий клієнт, кімната змінювала статус
+     */
+
     public static boolean isRoomOccupied(String roomNumber) {
         boolean isOccupied = false;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -260,6 +265,7 @@ public class DatabaseHandler {
         return isOccupied;
     }
 
+    //Методи для зміни статусу кімнат та резервацій в БД
     public static void UpdateStatusRoomToFalseDB(String number) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_ROOMS_TO_FALSE_SQL)) {
@@ -278,9 +284,4 @@ public class DatabaseHandler {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }
-
-

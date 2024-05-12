@@ -1,23 +1,22 @@
 package com.example.javaproject19team.RoomPackage;
 
 import com.example.javaproject19team.HotelReservationApp;
-import com.example.javaproject19team.RoomPackage.Room;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class RoomListApp extends Application {
+public class RoomList extends Application {
     private RoomListener roomListener;
     private static Stage hotelReservationStage;
 
@@ -31,9 +30,8 @@ public class RoomListApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         hotelReservationStage.hide();
-        //TODO Менять статус комнаты когда по ней создана резервация.
-
-        primaryStage.setTitle("Список доступних номерів");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
+        primaryStage.setTitle("Список номерів");
 
         ObservableList<Room> rooms = FXCollections.observableArrayList(HotelReservationApp.getRooms());
         TableView<Room> tableView = new TableView<>(rooms);
@@ -64,26 +62,39 @@ public class RoomListApp extends Application {
         addButton.setOnAction(e -> {
             showRoomAdd();
         });
-
+        addButton.setMinWidth(175);
+        addButton.setPrefHeight(35);
+        addButton.setFocusTraversable(false);
+        addButton.setId("menu-button");
 
         Button refreshButton = new Button("Оновити");
         refreshButton.setOnAction(e -> {
             rooms.clear();
             rooms.addAll(HotelReservationApp.getRooms());
         });
+        refreshButton.setMinWidth(175);
+        refreshButton.setPrefHeight(35);
+        refreshButton.setFocusTraversable(false);
+        refreshButton.setId("menu-button");
+
         Button onMainMenuButton = new Button("До головного меню");
         onMainMenuButton.setOnAction(e -> {
             primaryStage.hide();
             HotelReservationApp.primaryStage.show();
         });
-        GridPane.setConstraints(onMainMenuButton, 0, 4);
+        onMainMenuButton.setMinWidth(170);
+        onMainMenuButton.setPrefHeight(35);
+        onMainMenuButton.setFocusTraversable(false);
+        onMainMenuButton.setId("menu-button");
 
         HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
-        buttonsBox.setSpacing(10);
-        buttonsBox.setPadding(new Insets(10));
+        buttonsBox.setSpacing(0);
 
+        VBox filterBox = new VBox();
+        Label filterText = new Label("Фільтрація за номером, або типом, або по детальній інформації кімнати");
 
         TextField filterField = new TextField();
+        filterField.setMaxWidth(500);
         filterField.setPromptText("Пошук...");
         filterField.textProperty().addListener((observable, oldValue, newValue) -> {
             String filter = newValue.toLowerCase();
@@ -94,13 +105,23 @@ public class RoomListApp extends Application {
             ));
         });
 
+        filterBox.setAlignment(Pos.CENTER);
+        filterBox.getChildren().addAll(filterText,filterField);
+
+        VBox filterPriceVBox = new VBox();
+
+        Label filterPriceLabel = new Label("Фільтрація за ціною");
+
         TextField minPriceField = new TextField();
-        minPriceField.setPromptText("Минимальная цена");
+        minPriceField.setPromptText("Мінімальна ціна");
 
         TextField maxPriceField = new TextField();
-        maxPriceField.setPromptText("Максимальная цена");
+        maxPriceField.setPromptText("Максимальна ціна");
 
         Button filterButton = new Button("Фільтрувати");
+        filterButton.setMinHeight(31);
+        filterButton.setMaxHeight(31);
+
 
         filterButton.setOnAction(event -> {
             String filter = filterField.getText().toLowerCase();
@@ -117,13 +138,15 @@ public class RoomListApp extends Application {
 
         HBox priceFilterBox = new HBox(minPriceField,maxPriceField,filterButton);
         priceFilterBox.setSpacing(10);
-        priceFilterBox.setPadding(new Insets(10));
+        priceFilterBox.setAlignment(Pos.CENTER);
+        filterPriceVBox.setAlignment(Pos.CENTER);
+        filterPriceVBox.getChildren().addAll(filterPriceLabel,priceFilterBox);
 
-        VBox root = new VBox(filterField,priceFilterBox,buttonsBox, tableView);
+        VBox root = new VBox(buttonsBox,filterBox,filterPriceVBox, tableView);
         root.setSpacing(10);
-        root.setPadding(new Insets(10));
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 520, 570);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -135,14 +158,13 @@ public class RoomListApp extends Application {
 
     private void showRoomAdd() {
         Stage showRooms = new Stage();
-        RoomAdd roomAdd = new RoomAdd();
-        roomAdd.setRoomListener(roomListener);
+        RoomEditor roomEditor = new RoomEditor();
+        roomEditor.setRoomListener(roomListener);
         try {
-            roomAdd.start(showRooms);
+            roomEditor.start(showRooms);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Showing roomAdd");
     }
 
     public static void main(String[] args) {

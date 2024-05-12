@@ -7,57 +7,60 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class RoomAdd extends Application {
+public class RoomEditor extends Application {
     RoomListener roomListener;
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Додавання номеру");
+        primaryStage.setTitle("Додавання нового номеру");
+        primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10));
-        grid.setVgap(8);
-        grid.setHgap(10);
-
-        // Labels
         Label numberLabel = new Label("Номер:");
-        GridPane.setConstraints(numberLabel, 0, 0);
-
-        Label typeLabel = new Label("Тип:");
-        GridPane.setConstraints(typeLabel, 0, 1);
-
-        Label priceLabel = new Label("Ціна:");
-        GridPane.setConstraints(priceLabel, 0, 2);
-
-        Label detailsLabel = new Label("Детальна інформація:");
-        GridPane.setConstraints(detailsLabel, 0, 3);
-
-        // TextFields
         TextField numberInput = new TextField();
         numberInput.setPromptText("Введіть номер");
-        GridPane.setConstraints(numberInput, 1, 0);
 
+        HBox numberHBox = new HBox(numberLabel,numberInput);
+        numberHBox.setSpacing(5);
+        numberHBox.setAlignment(Pos.CENTER);
+
+        Label typeLabel = new Label("Тип:");
         ComboBox<String> typeInput = new ComboBox<>();
         typeInput.getItems().addAll("Одномістний","Двомістний","Багатовмістний");
-        GridPane.setConstraints(typeInput, 1, 1);
 
+        HBox typeHBox = new HBox(typeLabel,typeInput);
+        typeHBox.setSpacing(5);
+        typeHBox.setAlignment(Pos.CENTER);
+
+        Label priceLabel = new Label("Ціна:");
         TextField priceInput = new TextField();
         priceInput.setPromptText("Введіть ціну");
-        GridPane.setConstraints(priceInput, 1, 2);
 
+        HBox priceHBox = new HBox(priceLabel,priceInput);
+        priceHBox.setSpacing(5);
+        priceHBox.setAlignment(Pos.CENTER);
+
+        Label detailsLabel = new Label("Детальна інформація:");
         TextField detailsInput = new TextField();
         detailsInput.setPromptText("Введіть детальну інформацію");
-        GridPane.setConstraints(detailsInput, 1, 3);
+        detailsInput.setMinWidth(210);
 
-        // Buttons
-        Button cancelButton = new Button("Скасувати");
+        HBox detailsHBox = new HBox(detailsLabel,detailsInput);
+        detailsHBox.setSpacing(10);
+        detailsHBox.setAlignment(Pos.CENTER);
+
+        Button cancelButton = new Button("Вийти");
         cancelButton.setOnAction(e -> primaryStage.close());
-        GridPane.setConstraints(cancelButton, 0, 4);
+        cancelButton.setMinWidth(100);
+        cancelButton.setId("cancel-button");
 
         Button saveButton = new Button("Зберегти");
         saveButton.setOnAction(e -> saveRoom(
@@ -65,12 +68,18 @@ public class RoomAdd extends Application {
                 new SimpleStringProperty(typeInput.getValue()),
                 new SimpleIntegerProperty(Integer.parseInt(priceInput.getText())),
                 new SimpleStringProperty(detailsInput.getText())));
-        GridPane.setConstraints(saveButton, 1, 4);
+        saveButton.setMinWidth(100);
+        saveButton.setId("save-button");
 
-        grid.getChildren().addAll(numberLabel, typeLabel, priceLabel, detailsLabel, numberInput, typeInput, priceInput, detailsInput,
-                cancelButton, saveButton);
+        HBox buttonHBox = new HBox(cancelButton,saveButton);
+        buttonHBox.setSpacing(160);
 
-        Scene scene = new Scene(grid, 300, 200);
+        VBox root = new VBox(numberHBox,typeHBox,priceHBox,detailsHBox,buttonHBox);
+        root.setSpacing(10);
+        root.setPadding(new Insets(10));
+
+        Scene scene = new Scene(root, 380, 210);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -1,0 +1,136 @@
+/* Загальні стилі */
+.root {
+    -fx-background-color: #ECEFF1; /* Колір заднього фону */
+}
+
+/* Стилі для контейнерів VBox */
+.vbox-container {
+    -fx-padding: 20px; /* Відступ навколо контейнера */
+    -fx-spacing: 10px; /* Відстань між елементами */
+}
+
+/* Стилі для групи кнопок HBox */
+.hbox-buttons {
+    -fx-spacing: 10px; /* Відстань між кнопками */
+}
+
+/* Стилі для міток */
+.label {
+    -fx-font-size: 14px; /* Розмір шрифту */
+    -fx-text-fill: #333; /* Колір тексту */
+}
+
+/* Стилі для ComboBox */
+.combo-box {
+    -fx-background-color: #B0BEC5; /* Колір фону */
+}
+
+/* Стилі для випадаючих елементів списку */
+.list-cell {
+    -fx-background-color: #CFD8DC; /* Колір фону */
+    -fx-font-size: 14px; /* Розмір шрифту */
+    -fx-border-color: #c5ccd2; /* Колір межі */
+}
+
+.list-cell:hover {
+    -fx-background-color: #B0BEC5; /* Колір фону при наведенні */
+    -fx-font-size: 14px; /* Розмір шрифту */
+    -fx-text-fill: #333333; /* Колір тексту */
+}
+
+/* Стилі для DatePicker */
+.date-picker {
+    -fx-font-size: 14px; /* Розмір шрифту */
+    -fx-background-color: #B0BEC5; /* Колір фону */
+}
+
+/* Стилі для кнопок у DatePicker */
+.arrow-button{
+    -fx-background-color: #B0BEC5; /* Колір фону */
+}
+
+/* Загальні стилі для кнопок */
+.button {
+    -fx-font-size: 14px; /* Розмір шрифту */
+    -fx-background-color: #B0BEC5; /* Колір фону */
+    -fx-text-fill: #333333; /* Колір тексту */
+    -fx-border-radius: 5px; /* Радіус межі */
+    -fx-cursor: hand; /* Зміна курсору при наведенні */
+}
+
+.button:hover {
+    -fx-background-color: #a2afb6; /* Колір фону при наведенні */
+}
+
+.button:pressed {
+    -fx-background-color: #90A4AE; /* Колір фону при натисканні */
+}
+
+/* Стилі для кнопки "Скасувати" */
+#cancel-button {
+    -fx-margin: 1000px; /* Відступ від краю */
+    -fx-background-color: #c5b0b0; /* Колір фону */
+}
+
+#cancel-button:hover {
+    -fx-background-color: #b6a2a2; /* Колір фону при наведенні */
+}
+
+#cancel-button:pressed {
+    -fx-background-color: #ae9090; /* Колір фону при натисканні */
+}
+
+/* Стилі для кнопки "Зберегти" */
+#save-button {
+    -fx-margin: 1000px; /* Відступ від краю */
+    -fx-background-color: #b0c5b1; /* Колір фону */
+}
+
+#save-button:hover {
+    -fx-background-color: #a3b6a2; /* Колір фону при наведенні */
+}
+
+#save-button:pressed {
+    -fx-background-color: #92ae90; /* Колір фону при натисканні */
+}
+
+/* Стилі для TableView */
+.table-view{
+    -fx-control-inner-background: #ffffff; /* Колір фону таблиці */
+}
+
+/* Стилі для виділеного рядка в TableView */
+.table-row-cell:selected {
+    -fx-background-color: #e0e1e5; /* Колір фону виділеного рядка */
+}
+
+/* Стилі для текстових полів */
+.text-field {
+    -fx-background-color: #CFD8DC; /* Колір фону */
+}
+
+/* Стилі для заголовків стовпців в TableView */
+.table-column {
+    -fx-text-fill: #333333; /* Колір тексту */
+    -fx-font-size: 14px; /* Розмір шрифту */
+}
+
+/* Стилі для текстових полів */
+.text-field {
+    -fx-font-size: 14px; /* Розмір шрифту */
+}
+
+/* Стилі для MenuButton */
+#menu-button {
+    -fx-background-color: #78909C; /* Колір фону */
+    -fx-text-fill: #ECEFF1; /* Колір тексту */
+    -fx-background-radius: 0; /* Радіус межі */
+}
+
+#menu-button:hover {
+    -fx-background-color: #607D8B; /* Колір фону при наведенні */
+}
+
+#menu-button:pressed {
+    -fx-background-color: #546E7A; /* Колір фону при натисканні */
+}

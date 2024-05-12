@@ -1,31 +1,27 @@
 package com.example.javaproject19team.ReservationPackage;
 
 import com.example.javaproject19team.HotelReservationApp;
-import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
-import org.w3c.dom.Text;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
-public class ReservationListApp extends Application {
+public class ReservationList extends Application {
     private static Stage hotelReservationStage;
 
     private ReservationListener reservationListener;
@@ -42,7 +38,9 @@ public class ReservationListApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         hotelReservationStage.hide();
+        primaryStage.setTitle("Список резервацій");
         TableView<Reservation> tableView;
+        primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
         ObservableList<Reservation> reservations = FXCollections.observableArrayList(HotelReservationApp.getReservations());
 
         tableView = new TableView<>();
@@ -69,44 +67,60 @@ public class ReservationListApp extends Application {
             String statusText = status ? "Активна" : "Не активна";
             return new SimpleStringProperty(statusText);
         });
-        tableView.getColumns().addAll(clientSurnameColumn,roomColumn, arrivalDateColumn, departureDateColumn, statusColumn);
+        tableView.getColumns().addAll(clientSurnameColumn, roomColumn, arrivalDateColumn, departureDateColumn, statusColumn);
 
         Button addButton = new Button("Додати");
         addButton.setOnAction(e -> {
             showAddOrRemoveReservaions();
         });
+        addButton.setMinWidth(148);
+        addButton.setPrefHeight(35);
+        addButton.setFocusTraversable(false);
+        addButton.setId("menu-button");
 
         Button refreshButton = new Button("Оновити");
         refreshButton.setOnAction(e -> {
             reservations.clear();
             reservations.addAll(HotelReservationApp.getReservations());
         });
+        refreshButton.setMinWidth(148);
+        refreshButton.setPrefHeight(35);
+        refreshButton.setFocusTraversable(false);
+        refreshButton.setId("menu-button");
+
         Button onMainMenuButton = new Button("До головного меню");
         onMainMenuButton.setOnAction(e -> {
             primaryStage.hide();
             HotelReservationApp.primaryStage.show();
         });
+        onMainMenuButton.setMinWidth(148);
+        onMainMenuButton.setPrefHeight(35);
+        onMainMenuButton.setFocusTraversable(false);
+        onMainMenuButton.setId("menu-button");
 
-        Button printButton = new Button("Печать");
+        Button printButton = new Button("Друк");
         printButton.setOnAction(event -> {
             Reservation selectedReservation = tableView.getSelectionModel().getSelectedItem();
             if (selectedReservation != null) {
                 printReservationInfo(selectedReservation);
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Печать");
-                alert.setHeaderText("Ничего не выбрано");
-                alert.setContentText("Пожалуйста, выберите резервацию для печати.");
+                alert.setTitle("Друк");
+                alert.setHeaderText("Нічого не вибрано");
+                alert.setContentText("Будь ласка, виберіть резервацію для друку.");
                 alert.showAndWait();
             }
         });
+        printButton.setMinWidth(151);
+        printButton.setPrefHeight(35);
+        printButton.setFocusTraversable(false);
+        printButton.setId("menu-button");
 
 
-        GridPane.setConstraints(onMainMenuButton, 0, 4);
+        HBox buttonsBox = new HBox(addButton, refreshButton, printButton, onMainMenuButton);
 
-        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton,printButton);
-        buttonsBox.setSpacing(10);
-        buttonsBox.setPadding(new Insets(10));
+        VBox filterBox = new VBox();
+        Label filterText = new Label("Фільтрація за фамілією клієнта або за номером кімнати");
 
         TextField filterField = new TextField();
         filterField.setPromptText("Пошук...");
@@ -117,12 +131,16 @@ public class ReservationListApp extends Application {
                             reservation.getRoom().getNumber().toLowerCase().contains(filter)
             ));
         });
+        filterField.setMaxWidth(575);
 
-        VBox root = new VBox(buttonsBox,filterField, tableView);
+        filterBox.setAlignment(Pos.CENTER);
+        filterBox.getChildren().addAll(filterText,filterField);
+
+        VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);
-        root.setPadding(new Insets(10));
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 595, 500);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -136,17 +154,15 @@ public class ReservationListApp extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Showing showRooms");
     }
-
 
 
     private void printReservationInfo(Reservation reservation) {
         // Создание объектов Label для каждой строки информации
-        Label clientLabel = new Label("Клиент: " + reservation.getClient().getName() + " " + reservation.getClient().getSurname());
-        Label roomLabel = new Label("Номер комнаты: " + reservation.getRoom().getNumber());
-        Label arrivalLabel = new Label("Дата заезда: " + reservation.getArrivalDate());
-        Label departureLabel = new Label("Дата выезда: " + reservation.getDepartureDate());
+        Label clientLabel = new Label("Клієнт: " + reservation.getClient().getName() + " " + reservation.getClient().getSurname());
+        Label roomLabel = new Label("Номер: " + reservation.getRoom().getNumber());
+        Label arrivalLabel = new Label("Дата заселення: " + reservation.getArrivalDate());
+        Label departureLabel = new Label("Дата виселення: " + reservation.getDepartureDate());
 
         // Создание объекта VBox и добавление в него объектов Label
         VBox reservationVBox = new VBox();
@@ -164,9 +180,9 @@ public class ReservationListApp extends Application {
                 } else {
                     // Если печать не удалась, отобразите сообщение об ошибке
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Ошибка печати");
+                    alert.setTitle("Помилка друку");
                     alert.setHeaderText(null);
-                    alert.setContentText("Печать не удалась. Пожалуйста, попробуйте еще раз.");
+                    alert.setContentText("Друк не вдався. Будь ласка, спробуйте ще раз.");
                     alert.showAndWait();
                 }
             }
@@ -175,12 +191,10 @@ public class ReservationListApp extends Application {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ошибка печати");
             alert.setHeaderText(null);
-            alert.setContentText("Не удалось инициализировать задание печати. Пожалуйста, попробуйте еще раз.");
+            alert.setContentText("Не вдалося ініціалізувати завдання друку. Будь ласка, спробуйте ще раз.");
             alert.showAndWait();
         }
     }
-
-
 
 
     public static void main(String[] args) {
