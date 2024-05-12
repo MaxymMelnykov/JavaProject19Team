@@ -11,14 +11,14 @@ module com.example.javaproject19team {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
-    opens com.example.javaproject19team to javafx.fxml;
-    exports com.example.javaproject19team;
-    exports com.example.javaproject19team.СlientPackage;
-    opens com.example.javaproject19team.СlientPackage to javafx.fxml;
-    exports com.example.javaproject19team.DatabasePackage;
-    opens com.example.javaproject19team.DatabasePackage to javafx.fxml;
-    exports com.example.javaproject19team.ReservationPackage;
-    opens com.example.javaproject19team.ReservationPackage to javafx.fxml;
-    exports com.example.javaproject19team.RoomPackage;
-    opens com.example.javaproject19team.RoomPackage to javafx.fxml;
+    opens com.javaproject19team to javafx.fxml;
+    exports com.javaproject19team;
+    exports com.javaproject19team.СlientPackage;
+    opens com.javaproject19team.СlientPackage to javafx.fxml;
+    exports com.javaproject19team.DatabasePackage;
+    opens com.javaproject19team.DatabasePackage to javafx.fxml;
+    exports com.javaproject19team.ReservationPackage;
+    opens com.javaproject19team.ReservationPackage to javafx.fxml;
+    exports com.javaproject19team.RoomPackage;
+    opens com.javaproject19team.RoomPackage to javafx.fxml;
 }

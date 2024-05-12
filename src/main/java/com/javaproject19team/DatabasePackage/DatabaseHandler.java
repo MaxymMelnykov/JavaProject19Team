@@ -1,8 +1,8 @@
-package com.example.javaproject19team.DatabasePackage;
+package com.javaproject19team.DatabasePackage;
 
-import com.example.javaproject19team.ReservationPackage.Reservation;
-import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.СlientPackage.Client;
+import com.javaproject19team.ReservationPackage.Reservation;
+import com.javaproject19team.RoomPackage.Room;
+import com.javaproject19team.СlientPackage.Client;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

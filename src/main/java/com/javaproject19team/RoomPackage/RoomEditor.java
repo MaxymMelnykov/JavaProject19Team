@@ -1,6 +1,6 @@
-package com.example.javaproject19team.RoomPackage;
+package com.javaproject19team.RoomPackage;
 
-import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.javaproject19team.DatabasePackage.DatabaseHandler;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -79,6 +79,7 @@ public class RoomEditor extends Application {
 
         Scene scene = new Scene(root, 380, 210);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

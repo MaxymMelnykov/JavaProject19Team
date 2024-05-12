@@ -1,4 +1,4 @@
-package com.example.javaproject19team.DatabasePackage;
+package com.javaproject19team.DatabasePackage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

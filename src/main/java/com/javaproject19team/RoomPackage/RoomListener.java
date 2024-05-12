@@ -1,4 +1,4 @@
-package com.example.javaproject19team.RoomPackage;
+package com.javaproject19team.RoomPackage;
 
 
 public interface RoomListener {

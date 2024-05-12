@@ -1,6 +1,6 @@
-package com.example.javaproject19team.ReservationPackage;
+package com.javaproject19team.ReservationPackage;
 
-import com.example.javaproject19team.HotelReservationApp;
+import com.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -137,6 +137,7 @@ public class ReservationList extends Application {
 
         Scene scene = new Scene(root, 595, 500);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

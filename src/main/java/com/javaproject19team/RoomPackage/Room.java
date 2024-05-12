@@ -1,4 +1,4 @@
-package com.example.javaproject19team.RoomPackage;
+package com.javaproject19team.RoomPackage;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;

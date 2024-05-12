@@ -1,6 +1,6 @@
-package com.example.javaproject19team.RoomPackage;
+package com.javaproject19team.RoomPackage;
 
-import com.example.javaproject19team.HotelReservationApp;
+import com.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -143,6 +143,7 @@ public class RoomList extends Application {
 
         Scene scene = new Scene(root, 520, 570);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

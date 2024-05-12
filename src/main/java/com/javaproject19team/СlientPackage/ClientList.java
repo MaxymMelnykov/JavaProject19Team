@@ -1,6 +1,6 @@
-package com.example.javaproject19team.СlientPackage;
+package com.javaproject19team.СlientPackage;
 
-import com.example.javaproject19team.HotelReservationApp;
+import com.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -104,6 +104,7 @@ public class ClientList extends Application implements ClientListener {
 
         Scene scene = new Scene(root, 490, 500);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

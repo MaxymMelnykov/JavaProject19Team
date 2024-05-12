@@ -1,8 +1,8 @@
-package com.example.javaproject19team.ReservationPackage;
+package com.javaproject19team.ReservationPackage;
 
-import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
-import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.СlientPackage.Client;
+import com.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.javaproject19team.RoomPackage.Room;
+import com.javaproject19team.СlientPackage.Client;
 
 import java.time.LocalDate;
 
@@ -43,17 +43,12 @@ public class Reservation {
                 room.setStatus(true);
         }
     }
-
-
     public Client getClient() {
         return client;
     }
-
     public Room getRoom() {
         return room;
     }
-
-
     public LocalDate getArrivalDate() {
         return arrivalDate;
     }

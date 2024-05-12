@@ -1,15 +1,15 @@
-package com.example.javaproject19team;
+package com.javaproject19team;
 
-import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
-import com.example.javaproject19team.ReservationPackage.Reservation;
-import com.example.javaproject19team.ReservationPackage.ReservationList;
-import com.example.javaproject19team.ReservationPackage.ReservationListener;
-import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.RoomPackage.RoomList;
-import com.example.javaproject19team.RoomPackage.RoomListener;
-import com.example.javaproject19team.СlientPackage.Client;
-import com.example.javaproject19team.СlientPackage.ClientList;
-import com.example.javaproject19team.СlientPackage.ClientListener;
+import com.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.javaproject19team.ReservationPackage.Reservation;
+import com.javaproject19team.ReservationPackage.ReservationList;
+import com.javaproject19team.ReservationPackage.ReservationListener;
+import com.javaproject19team.RoomPackage.Room;
+import com.javaproject19team.RoomPackage.RoomList;
+import com.javaproject19team.RoomPackage.RoomListener;
+import com.javaproject19team.СlientPackage.Client;
+import com.javaproject19team.СlientPackage.ClientList;
+import com.javaproject19team.СlientPackage.ClientListener;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -79,6 +79,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
         Scene scene = new Scene(root, 480, 120);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -132,6 +133,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         rooms.add(room);
     }
 
+    @Override
     public void onReservationSaved(Reservation reservation) {
         reservations.add(reservation);
     }

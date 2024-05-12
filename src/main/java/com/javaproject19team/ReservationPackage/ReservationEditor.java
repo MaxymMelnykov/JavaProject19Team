@@ -1,9 +1,9 @@
-package com.example.javaproject19team.ReservationPackage;
+package com.javaproject19team.ReservationPackage;
 
-import com.example.javaproject19team.DatabasePackage.DatabaseHandler;
-import com.example.javaproject19team.HotelReservationApp;
-import com.example.javaproject19team.RoomPackage.Room;
-import com.example.javaproject19team.СlientPackage.Client;
+import com.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.javaproject19team.HotelReservationApp;
+import com.javaproject19team.RoomPackage.Room;
+import com.javaproject19team.СlientPackage.Client;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,6 +88,7 @@ public class ReservationEditor extends Application {
 
         Scene scene = new Scene(root, 300, 255);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
