@@ -45,7 +45,7 @@
 }
 
 /* Стилі для кнопок у DatePicker */
-.arrow-button{
+.arrow-button {
     -fx-background-color: #B0BEC5; /* Колір фону */
 }
 
@@ -95,7 +95,7 @@
 }
 
 /* Стилі для TableView */
-.table-view{
+.table-view {
     -fx-control-inner-background: #ffffff; /* Колір фону таблиці */
 }
 

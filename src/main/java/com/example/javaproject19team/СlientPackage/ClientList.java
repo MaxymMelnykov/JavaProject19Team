@@ -18,6 +18,7 @@ public class ClientList extends Application implements ClientListener {
     private TableView<Client> tableView;
     private final ObservableList<Client> clientsObs = FXCollections.observableArrayList();
     private ClientListener clientListener;
+
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
@@ -77,7 +78,7 @@ public class ClientList extends Application implements ClientListener {
         onMainMenuButton.setMinWidth(166);
 
 
-        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
+        HBox buttonsBox = new HBox(addButton, refreshButton, onMainMenuButton);
 
         VBox filterBox = new VBox();
         Label filterText = new Label("Фільтрація за інформацією про клієнта");
@@ -96,7 +97,7 @@ public class ClientList extends Application implements ClientListener {
         filterField.setMaxWidth(470);
 
         filterBox.setAlignment(Pos.CENTER);
-        filterBox.getChildren().addAll(filterText,filterField);
+        filterBox.getChildren().addAll(filterText, filterField);
 
         VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);
@@ -124,6 +125,7 @@ public class ClientList extends Application implements ClientListener {
         }
         System.out.println("Showing AddOrRemove");
     }
+
     @Override
     public void stop() throws Exception {
         super.stop();

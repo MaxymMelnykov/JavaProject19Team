@@ -10,13 +10,14 @@ public class Room {
     private final StringProperty details;
     private boolean status; // True - Вільний / False - Зайнятий
 
-    public Room(StringProperty number, StringProperty type, IntegerProperty price,StringProperty details, boolean status) {
+    public Room(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details, boolean status) {
         this.number = number;
         this.type = type;
         this.price = price;
         this.details = details;
         this.status = status;
     }
+
     public boolean isStatus() {
         return status;
     }

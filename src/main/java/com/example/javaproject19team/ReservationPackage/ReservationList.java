@@ -130,7 +130,7 @@ public class ReservationList extends Application {
         filterField.setMaxWidth(575);
 
         filterBox.setAlignment(Pos.CENTER);
-        filterBox.getChildren().addAll(filterText,filterField);
+        filterBox.getChildren().addAll(filterText, filterField);
 
         VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);

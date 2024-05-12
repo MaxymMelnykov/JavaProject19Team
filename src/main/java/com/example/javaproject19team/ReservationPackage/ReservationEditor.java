@@ -51,14 +51,14 @@ public class ReservationEditor extends Application {
         Label dateLabelArrival = new Label("Дата заселення:");
         DatePicker datePickerArrival = new DatePicker();
         datePickerArrival.setMaxWidth(150);
-        HBox arrivalHBox = new HBox(dateLabelArrival,datePickerArrival);
+        HBox arrivalHBox = new HBox(dateLabelArrival, datePickerArrival);
         arrivalHBox.setAlignment(Pos.CENTER);
         arrivalHBox.setSpacing(5);
 
         Label dateLabelDeparture = new Label("Дата виселення:");
         DatePicker datePickerDeparture = new DatePicker();
         datePickerDeparture.setMaxWidth(150);
-        HBox departureHBox = new HBox(dateLabelDeparture,datePickerDeparture);
+        HBox departureHBox = new HBox(dateLabelDeparture, datePickerDeparture);
         departureHBox.setAlignment(Pos.CENTER);
         departureHBox.setSpacing(5);
 
@@ -77,12 +77,12 @@ public class ReservationEditor extends Application {
                 datePickerDeparture.getValue()
         ));
 
-        HBox buttonHbox = new HBox(cancelButton,saveButton);
+        HBox buttonHbox = new HBox(cancelButton, saveButton);
         buttonHbox.setSpacing(80);
         saveButton.setId("save-button");
 
 
-        VBox root = new VBox(clientComboBox,roomTypeComboBox,roomComboBox,arrivalHBox,departureHBox,buttonHbox);
+        VBox root = new VBox(clientComboBox, roomTypeComboBox, roomComboBox, arrivalHBox, departureHBox, buttonHbox);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
@@ -129,6 +129,7 @@ public class ReservationEditor extends Application {
         }
         roomComboBox.setItems(roomsObservableList);
     }
+
     public static void main(String[] args) {
         launch(args);
     }

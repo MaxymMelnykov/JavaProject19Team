@@ -27,15 +27,15 @@ public class RoomEditor extends Application {
         TextField numberInput = new TextField();
         numberInput.setPromptText("Введіть номер");
 
-        HBox numberHBox = new HBox(numberLabel,numberInput);
+        HBox numberHBox = new HBox(numberLabel, numberInput);
         numberHBox.setSpacing(5);
         numberHBox.setAlignment(Pos.CENTER);
 
         Label typeLabel = new Label("Тип:");
         ComboBox<String> typeInput = new ComboBox<>();
-        typeInput.getItems().addAll("Одномістний","Двомістний","Багатовмістний");
+        typeInput.getItems().addAll("Одномістний", "Двомістний", "Багатовмістний");
 
-        HBox typeHBox = new HBox(typeLabel,typeInput);
+        HBox typeHBox = new HBox(typeLabel, typeInput);
         typeHBox.setSpacing(5);
         typeHBox.setAlignment(Pos.CENTER);
 
@@ -43,7 +43,7 @@ public class RoomEditor extends Application {
         TextField priceInput = new TextField();
         priceInput.setPromptText("Введіть ціну");
 
-        HBox priceHBox = new HBox(priceLabel,priceInput);
+        HBox priceHBox = new HBox(priceLabel, priceInput);
         priceHBox.setSpacing(5);
         priceHBox.setAlignment(Pos.CENTER);
 
@@ -52,7 +52,7 @@ public class RoomEditor extends Application {
         detailsInput.setPromptText("Введіть детальну інформацію");
         detailsInput.setMinWidth(210);
 
-        HBox detailsHBox = new HBox(detailsLabel,detailsInput);
+        HBox detailsHBox = new HBox(detailsLabel, detailsInput);
         detailsHBox.setSpacing(10);
         detailsHBox.setAlignment(Pos.CENTER);
 
@@ -70,10 +70,10 @@ public class RoomEditor extends Application {
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
 
-        HBox buttonHBox = new HBox(cancelButton,saveButton);
+        HBox buttonHBox = new HBox(cancelButton, saveButton);
         buttonHBox.setSpacing(160);
 
-        VBox root = new VBox(numberHBox,typeHBox,priceHBox,detailsHBox,buttonHBox);
+        VBox root = new VBox(numberHBox, typeHBox, priceHBox, detailsHBox, buttonHBox);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
@@ -94,7 +94,7 @@ public class RoomEditor extends Application {
             status = false; // Если комната уже занята, устанавливаем статус как занятый
         }
 
-        DatabaseHandler.saveRoomDB(numberDB, typeDB, priceDB, detailsDB,status);
+        DatabaseHandler.saveRoomDB(numberDB, typeDB, priceDB, detailsDB, status);
         Room newRoom = new Room(number, type, price, details, status);
         roomListener.onRoomSaved(newRoom);
 

@@ -12,6 +12,7 @@ public class Reservation {
     private LocalDate arrivalDate;
     private LocalDate departureDate;
     private boolean status;
+
     public Reservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate, boolean status) {
         this.client = client;
         this.room = room;
@@ -22,22 +23,22 @@ public class Reservation {
         Такий конструктор потрібен для того, щоб змінювати статус номеру, коли в неї додається людина
         Наприклад: В одномістній кімнаті може жити лише одна людина, тому при створенні резервації, ми змінюємо статус кімнати
          */
-        switch (room.getType()){
+        switch (room.getType()) {
             case "Одномістний":
                 DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                 room.setStatus(false);
             case "Двомістний":
-                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 2)) {
+                if ((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 2)) {
                     DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                     room.setStatus(false);
                 }
-                    break;
+                break;
             case "Багатовмістний":
-                if((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 5)) {
+                if ((DatabaseHandler.countRoomsReservations(DatabaseHandler.getRoomIDFromDB(room)) == 5)) {
                     DatabaseHandler.UpdateStatusRoomToFalseDB(room.getNumber());
                     room.setStatus(false);
                 }
-                    break;
+                break;
             default:
                 room.setStatus(true);
         }

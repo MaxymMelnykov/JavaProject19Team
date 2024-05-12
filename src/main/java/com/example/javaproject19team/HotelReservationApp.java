@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -36,7 +37,6 @@ public class HotelReservationApp extends Application implements ClientListener, 
         HotelReservationApp.primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
         primaryStage.setTitle("Головний екран");
-
 
 
         Button reservationsButton = new Button("Резервації");
@@ -63,18 +63,18 @@ public class HotelReservationApp extends Application implements ClientListener, 
         roomsButton.setId("menu-button");
         roomsButton.setOnAction(e -> showRooms());
 
-        HBox buttonHBox = new HBox(clientsButton,reservationsButton,roomsButton);
+        HBox buttonHBox = new HBox(clientsButton, reservationsButton, roomsButton);
         buttonHBox.setAlignment(Pos.CENTER);
 
 
-        Label reservedRoomsLabel = new Label("Кількість зайнятих номерів : "  + (rooms.size() - getFreeRooms().size()));
+        Label reservedRoomsLabel = new Label("Кількість зайнятих номерів : " + (rooms.size() - getFreeRooms().size()));
         Label unreservedRoomsLabel = new Label("Кількість доступних номерів : " + getFreeRooms().size());
 
-        VBox roominfoVBox = new VBox(reservedRoomsLabel,unreservedRoomsLabel);
+        VBox roominfoVBox = new VBox(reservedRoomsLabel, unreservedRoomsLabel);
         roominfoVBox.setAlignment(Pos.CENTER);
         roominfoVBox.setSpacing(10);
 
-        VBox root = new VBox(buttonHBox,roominfoVBox);
+        VBox root = new VBox(buttonHBox, roominfoVBox);
         root.setSpacing(10);
 
         Scene scene = new Scene(root, 480, 120);
@@ -126,40 +126,43 @@ public class HotelReservationApp extends Application implements ClientListener, 
     public void onClientSaved(Client client) {
         clients.add(client);
     }
+
     @Override
     public void onRoomSaved(Room room) {
         rooms.add(room);
     }
-    public void onReservationSaved(Reservation reservation){
+
+    public void onReservationSaved(Reservation reservation) {
         reservations.add(reservation);
     }
 
-    public static void getClientsFromDB(){
+    public static void getClientsFromDB() {
         int countClientsInDB = DatabaseHandler.countClientsFromDB();
         for (int i = 0; i < countClientsInDB; i++) {
             try {
-                clients.add(i,DatabaseHandler.getClientFromDB(i + 1));
+                clients.add(i, DatabaseHandler.getClientFromDB(i + 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void getRoomsFromDB(){
+    public static void getRoomsFromDB() {
         int countRoomsInDB = DatabaseHandler.countRoomsFromDB();
-        for(int i = 0; i < countRoomsInDB; i++){
+        for (int i = 0; i < countRoomsInDB; i++) {
             try {
-                rooms.add(i,DatabaseHandler.getRoomFromDB(i + 1));
+                rooms.add(i, DatabaseHandler.getRoomFromDB(i + 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    public static void getReservationsFromDB(){
+
+    public static void getReservationsFromDB() {
         int countReservaionsInDB = DatabaseHandler.countReservationsFromDB();
-        for(int i = 0; i < countReservaionsInDB; i++){
+        for (int i = 0; i < countReservaionsInDB; i++) {
             try {
-                reservations.add(i,DatabaseHandler.getReservationFromDB(i + 1));
+                reservations.add(i, DatabaseHandler.getReservationFromDB(i + 1));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -173,19 +176,21 @@ public class HotelReservationApp extends Application implements ClientListener, 
     public static ArrayList<Room> getRooms() {
         return rooms;
     }
+
     public static ArrayList<Room> getFreeSingleRooms() {
         ArrayList<Room> singleRooms = new ArrayList<>();
-        for(Room room : rooms){
-            if(Objects.equals(room.getType(), "Одномістний") && room.isStatus()){
+        for (Room room : rooms) {
+            if (Objects.equals(room.getType(), "Одномістний") && room.isStatus()) {
                 singleRooms.add(room);
             }
         }
         return singleRooms;
     }
+
     public static ArrayList<Room> getFreePairRooms() {
         ArrayList<Room> pairRooms = new ArrayList<>();
-        for(Room room : rooms){
-            if(Objects.equals(room.getType(), "Двомістний") && room.isStatus()){
+        for (Room room : rooms) {
+            if (Objects.equals(room.getType(), "Двомістний") && room.isStatus()) {
                 pairRooms.add(room);
             }
         }
@@ -194,8 +199,8 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
     public static ArrayList<Room> getFreeMultiRooms() {
         ArrayList<Room> multiRooms = new ArrayList<>();
-        for(Room room : rooms){
-            if(Objects.equals(room.getType(), "Багатовмістний") && room.isStatus()){
+        for (Room room : rooms) {
+            if (Objects.equals(room.getType(), "Багатовмістний") && room.isStatus()) {
                 multiRooms.add(room);
             }
         }
@@ -205,8 +210,8 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
     public static ArrayList<Room> getFreeRooms() {
         ArrayList<Room> freeRooms = new ArrayList<>();
-        for(Room room : rooms){
-            if(room.isStatus()){
+        for (Room room : rooms) {
+            if (room.isStatus()) {
                 freeRooms.add(room);
             }
         }

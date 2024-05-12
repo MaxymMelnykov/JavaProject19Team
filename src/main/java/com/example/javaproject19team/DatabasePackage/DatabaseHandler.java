@@ -179,6 +179,7 @@ public class DatabaseHandler {
         }
         return room;
     }
+
     public static Reservation getReservationFromDB(int reservationID) {
         Reservation reservation = null;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -275,6 +276,7 @@ public class DatabaseHandler {
             throw new RuntimeException(e);
         }
     }
+
     public static void UpdateStatusReservationToFalseDB(int ClientID) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_RESERVATIONS_TO_FALSE_SQL)) {

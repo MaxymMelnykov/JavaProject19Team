@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+
 public class ClientEditor extends Application {
     private ClientListener clientListener;
 
@@ -26,7 +27,7 @@ public class ClientEditor extends Application {
         TextField nameInput = new TextField();
         nameInput.setPromptText("Введіть ім'я");
 
-        HBox nameHBox = new HBox(nameLabel,nameInput);
+        HBox nameHBox = new HBox(nameLabel, nameInput);
         nameHBox.setAlignment(Pos.CENTER);
         nameHBox.setSpacing(10);
 
@@ -34,7 +35,7 @@ public class ClientEditor extends Application {
         TextField surnameInput = new TextField();
         surnameInput.setPromptText("Введіть фамілію");
 
-        HBox surnameHBox = new HBox(surnameLabel,surnameInput);
+        HBox surnameHBox = new HBox(surnameLabel, surnameInput);
         surnameHBox.setAlignment(Pos.CENTER);
         surnameHBox.setSpacing(10);
 
@@ -42,7 +43,7 @@ public class ClientEditor extends Application {
         TextField emailInput = new TextField();
         emailInput.setPromptText("Введіть емейл");
 
-        HBox emailHBox = new HBox(emailLabel,emailInput);
+        HBox emailHBox = new HBox(emailLabel, emailInput);
         emailHBox.setAlignment(Pos.CENTER);
         emailHBox.setSpacing(10);
 
@@ -50,7 +51,7 @@ public class ClientEditor extends Application {
         TextField phoneInput = new TextField();
         phoneInput.setPromptText("Введіть телефон");
 
-        HBox phoneHBox = new HBox(phoneLabel,phoneInput);
+        HBox phoneHBox = new HBox(phoneLabel, phoneInput);
         phoneHBox.setAlignment(Pos.CENTER);
         phoneHBox.setSpacing(10);
 
@@ -68,10 +69,10 @@ public class ClientEditor extends Application {
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
 
-        HBox buttonHBox = new HBox(cancelButton,saveButton);
+        HBox buttonHBox = new HBox(cancelButton, saveButton);
         buttonHBox.setSpacing(95);
 
-        VBox root = new VBox(nameHBox,surnameHBox,emailHBox,phoneHBox,buttonHBox);
+        VBox root = new VBox(nameHBox, surnameHBox, emailHBox, phoneHBox, buttonHBox);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
@@ -87,7 +88,7 @@ public class ClientEditor extends Application {
         String emailDB = emailInput.get();
         String phoneDB = phoneNumber.get();
 
-        DatabaseHandler.saveClientDB(clientNameDB,clientSurnameDB,emailDB,phoneDB);
+        DatabaseHandler.saveClientDB(clientNameDB, clientSurnameDB, emailDB, phoneDB);
         Client newClient = new Client(clientName, clientSurname, emailInput, phoneNumber);
         clientListener.onClientSaved(newClient);
 

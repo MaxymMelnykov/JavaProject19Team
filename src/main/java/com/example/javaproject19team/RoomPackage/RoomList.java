@@ -20,6 +20,7 @@ public class RoomList extends Application {
     public void setRoomListener(RoomListener roomListener) {
         this.roomListener = roomListener;
     }
+
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
@@ -52,7 +53,7 @@ public class RoomList extends Application {
             return new SimpleStringProperty(statusText);
         });
 
-        tableView.getColumns().addAll(numberColumn, typeColumn, priceColumn, detailsColumn,statusColumn);
+        tableView.getColumns().addAll(numberColumn, typeColumn, priceColumn, detailsColumn, statusColumn);
 
 
         Button addButton = new Button("Додати");
@@ -82,7 +83,7 @@ public class RoomList extends Application {
         onMainMenuButton.setFocusTraversable(false);
         onMainMenuButton.setId("menu-button");
 
-        HBox buttonsBox = new HBox(addButton, refreshButton,onMainMenuButton);
+        HBox buttonsBox = new HBox(addButton, refreshButton, onMainMenuButton);
         buttonsBox.setSpacing(0);
 
         VBox filterBox = new VBox();
@@ -101,7 +102,7 @@ public class RoomList extends Application {
         });
 
         filterBox.setAlignment(Pos.CENTER);
-        filterBox.getChildren().addAll(filterText,filterField);
+        filterBox.getChildren().addAll(filterText, filterField);
 
         VBox filterPriceVBox = new VBox();
 
@@ -131,13 +132,13 @@ public class RoomList extends Application {
         });
 
 
-        HBox priceFilterBox = new HBox(minPriceField,maxPriceField,filterButton);
+        HBox priceFilterBox = new HBox(minPriceField, maxPriceField, filterButton);
         priceFilterBox.setSpacing(10);
         priceFilterBox.setAlignment(Pos.CENTER);
         filterPriceVBox.setAlignment(Pos.CENTER);
-        filterPriceVBox.getChildren().addAll(filterPriceLabel,priceFilterBox);
+        filterPriceVBox.getChildren().addAll(filterPriceLabel, priceFilterBox);
 
-        VBox root = new VBox(buttonsBox,filterBox,filterPriceVBox, tableView);
+        VBox root = new VBox(buttonsBox, filterBox, filterPriceVBox, tableView);
         root.setSpacing(10);
 
         Scene scene = new Scene(root, 520, 570);
@@ -145,6 +146,7 @@ public class RoomList extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     @Override
     public void stop() throws Exception {
         super.stop();
