@@ -1,6 +1,5 @@
 package com.example.javaproject19team.СlientPackage;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
 public class Client {
@@ -16,17 +15,12 @@ public class Client {
         this.phone = phone;
     }
 
-
     public String getName() {
         return name.get();
     }
 
     public StringProperty nameProperty() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name.set(name);
     }
 
     public String getSurname() {
@@ -37,10 +31,6 @@ public class Client {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname.set(surname);
-    }
-
     public String getEmail() {
         return email.get();
     }
@@ -49,20 +39,12 @@ public class Client {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email.set(email);
-    }
-
     public String getPhone() {
         return phone.get();
     }
 
     public StringProperty phoneProperty() {
         return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone.set(phone);
     }
 
     @Override

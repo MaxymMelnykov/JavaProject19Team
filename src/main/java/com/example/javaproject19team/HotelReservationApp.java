@@ -11,7 +11,6 @@ import com.example.javaproject19team.СlientPackage.Client;
 import com.example.javaproject19team.СlientPackage.ClientList;
 import com.example.javaproject19team.СlientPackage.ClientListener;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;

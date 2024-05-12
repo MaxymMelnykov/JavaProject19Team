@@ -33,10 +33,6 @@ public class Room {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number.set(number);
-    }
-
     public String getType() {
         return type.get();
     }
@@ -45,20 +41,12 @@ public class Room {
         return type;
     }
 
-    public void setType(String type) {
-        this.type.set(type);
-    }
-
     public int getPrice() {
         return price.get();
     }
 
     public IntegerProperty priceProperty() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price.set(price);
     }
 
     public String getDetails() {
@@ -76,10 +64,6 @@ public class Room {
                 ", " + type.get() +
                 ", " + price.get() +
                 ", " + details.get();
-    }
-
-    public void setDetails(String details) {
-        this.details.set(details);
     }
 
 }
