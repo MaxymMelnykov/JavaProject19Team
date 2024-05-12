@@ -56,9 +56,7 @@ public class RoomList extends Application {
 
 
         Button addButton = new Button("Додати");
-        addButton.setOnAction(e -> {
-            showRoomAdd();
-        });
+        addButton.setOnAction(e -> showRoomAdd());
         addButton.setMinWidth(175);
         addButton.setPrefHeight(35);
         addButton.setFocusTraversable(false);

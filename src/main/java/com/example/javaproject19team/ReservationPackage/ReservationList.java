@@ -68,9 +68,7 @@ public class ReservationList extends Application {
         tableView.getColumns().addAll(clientSurnameColumn, roomColumn, arrivalDateColumn, departureDateColumn, statusColumn);
 
         Button addButton = new Button("Додати");
-        addButton.setOnAction(e -> {
-            showAddOrRemoveReservaions();
-        });
+        addButton.setOnAction(e -> showAddOrRemoveReservaions());
         addButton.setMinWidth(148);
         addButton.setPrefHeight(35);
         addButton.setFocusTraversable(false);

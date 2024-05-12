@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class ClientList extends Application implements ClientListener {
     private static Stage hotelReservationStage;
     private TableView<Client> tableView;
-    private ObservableList<Client> clientsObs = FXCollections.observableArrayList();
+    private final ObservableList<Client> clientsObs = FXCollections.observableArrayList();
     private ClientListener clientListener;
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
@@ -51,9 +51,7 @@ public class ClientList extends Application implements ClientListener {
         tableView.getColumns().addAll(nameColumn, surnameColumn, emailColumn, phoneColumn);
 
         Button addButton = new Button("Додати");
-        addButton.setOnAction(e -> {
-            showAddOrRemoveClients();
-        });
+        addButton.setOnAction(e -> showAddOrRemoveClients());
         addButton.setId("menu-button");
         addButton.setFocusTraversable(false);
         addButton.setMinWidth(163);
