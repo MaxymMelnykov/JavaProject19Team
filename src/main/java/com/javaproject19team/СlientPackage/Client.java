@@ -1,12 +1,17 @@
+/*
+Client:
+Клас, який призначений для клієнтів готелю.
+Він містить основну інформацію про клієнта, таку як ім'я, прізвище, електронну пошту та номер телефону.
+*/
 package com.javaproject19team.СlientPackage;
 
 import javafx.beans.property.StringProperty;
 
 public class Client {
-    private final StringProperty name;
-    private final StringProperty surname;
-    private final StringProperty email;
-    private final StringProperty phone;
+    private final StringProperty name; // Ім'я
+    private final StringProperty surname; // Прізвище
+    private final StringProperty email; // Електронна пошта клієнта
+    private final StringProperty phone; // Телефон клієнта
 
     public Client(StringProperty name, StringProperty surname, StringProperty email, StringProperty phone) {
         this.name = name;
@@ -15,6 +20,7 @@ public class Client {
         this.phone = phone;
     }
 
+    // Геттери та сеттери
     public String getName() {
         return name.get();
     }
@@ -47,6 +53,7 @@ public class Client {
         return phone;
     }
 
+    // Перевизначений метод toString
     @Override
     public String toString() {
         return "Клієнт " +
@@ -55,5 +62,4 @@ public class Client {
                 ", " + email.get() +
                 ", " + phone.get();
     }
-
 }
