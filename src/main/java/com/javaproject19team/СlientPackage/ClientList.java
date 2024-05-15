@@ -1,3 +1,7 @@
+/*
+ClientList:
+Клас, що відображає список клієнтів та надає можливість додавання нових клієнтів.
+*/
 package com.javaproject19team.СlientPackage;
 
 import com.javaproject19team.HotelReservationApp;
@@ -19,28 +23,36 @@ public class ClientList extends Application implements ClientListener {
     private final ObservableList<Client> clientsObs = FXCollections.observableArrayList();
     private ClientListener clientListener;
 
+    // Метод для встановлення головного вікна HotelReservationApp
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
 
+    // Метод для встановлення ClientListener
     public void setClientListener(ClientListener clientListener) {
         this.clientListener = clientListener;
     }
 
+    // Метод, що викликається при старті додатку
     @Override
     public void start(Stage primaryStage) {
+        // Ховаємо головне вікно HotelReservationApp
         hotelReservationStage.hide();
+
+        // Налаштування вікна
         primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
         primaryStage.setTitle("Список клієнтів");
 
+        // Додавання клієнтів з HotelReservationApp до ObservableList
         clientsObs.addAll(HotelReservationApp.getClients());
         tableView = new TableView<>();
         tableView.setItems(clientsObs);
 
+        // Налаштування колонок таблиці
         TableColumn<Client, String> nameColumn = new TableColumn<>("Ім'я");
         nameColumn.setCellValueFactory(data -> data.getValue().nameProperty());
 
-        TableColumn<Client, String> surnameColumn = new TableColumn<>("Фамілія");
+        TableColumn<Client, String> surnameColumn = new TableColumn<>("Прізвище");
         surnameColumn.setCellValueFactory(data -> data.getValue().surnameProperty());
 
         TableColumn<Client, String> emailColumn = new TableColumn<>("Email");
@@ -51,14 +63,17 @@ public class ClientList extends Application implements ClientListener {
 
         tableView.getColumns().addAll(nameColumn, surnameColumn, emailColumn, phoneColumn);
 
+        // Кнопка "Додати"
         Button addButton = new Button("Додати");
         addButton.setOnAction(e -> showAddOrRemoveClients());
         addButton.setId("menu-button");
         addButton.setFocusTraversable(false);
         addButton.setMinWidth(163);
 
+        // Кнопка "Оновити"
         Button refreshButton = new Button("Оновити");
         refreshButton.setOnAction(e -> {
+            // Оновлення списку клієнтів
             clientsObs.clear();
             clientsObs.addAll(HotelReservationApp.getClients());
         });
@@ -66,9 +81,10 @@ public class ClientList extends Application implements ClientListener {
         refreshButton.setFocusTraversable(false);
         refreshButton.setMinWidth(163);
 
-
+        // Кнопка "До головного меню"
         Button onMainMenuButton = new Button("До головного меню");
         onMainMenuButton.setOnAction(e -> {
+            // Повернення до головного вікна HotelReservationApp
             primaryStage.hide();
             HotelReservationApp.primaryStage.show();
         });
@@ -77,12 +93,12 @@ public class ClientList extends Application implements ClientListener {
         onMainMenuButton.setFocusTraversable(false);
         onMainMenuButton.setMinWidth(166);
 
-
+        // Розміщення кнопок
         HBox buttonsBox = new HBox(addButton, refreshButton, onMainMenuButton);
 
+        // Фільтрація за інформацією про клієнт
         VBox filterBox = new VBox();
         Label filterText = new Label("Фільтрація за інформацією про клієнта");
-
         TextField filterField = new TextField();
         filterField.setPromptText("Пошук...");
         filterField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -99,9 +115,11 @@ public class ClientList extends Application implements ClientListener {
         filterBox.setAlignment(Pos.CENTER);
         filterBox.getChildren().addAll(filterText, filterField);
 
+        // Головний контейнер VBox
         VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);
 
+        // Scene, яка відображається у вікні
         Scene scene = new Scene(root, 490, 500);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setResizable(false);
@@ -109,12 +127,14 @@ public class ClientList extends Application implements ClientListener {
         primaryStage.show();
     }
 
-
+    // Метод, який викликається при збереженні клієнта
     @Override
     public void onClientSaved(Client client) {
+        // Додаємо нового клієнта до списку
         clientsObs.add(client);
     }
 
+    // Метод для відображення вікна додавання або видалення клієнта
     private void showAddOrRemoveClients() {
         Stage addOrRemoveClients = new Stage();
         ClientEditor clientEditor = new ClientEditor();
@@ -127,13 +147,15 @@ public class ClientList extends Application implements ClientListener {
         System.out.println("Showing AddOrRemove");
     }
 
+    // Метод, який викликається при закритті вікна
     @Override
     public void stop() throws Exception {
         super.stop();
-        // Показываем HotelReservationApp при закрытии ClientListApp
+        // Показуємо HotelReservationApp при закритті ClientListApp
         hotelReservationStage.show();
     }
 
+    // Точка входу у програму
     public static void main(String[] args) {
         launch(args);
     }
