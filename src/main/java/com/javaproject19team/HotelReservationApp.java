@@ -1,3 +1,8 @@
+/*
+HotelReservationApp:
+Цей клас призначений за головний вхід в програму, управління головним екраном
+та ініціалізацію інших частин програми, таких як клієнти, номери та резервації.
+*/
 package com.javaproject19team;
 
 import com.javaproject19team.DatabasePackage.DatabaseHandler;
@@ -32,13 +37,14 @@ public class HotelReservationApp extends Application implements ClientListener, 
 
     @Override
     public void start(Stage primaryStage) {
-
+        // Головне вікно програми
         HotelReservationApp.primaryStage = primaryStage;
         HotelReservationApp.primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
 
+        // Заголовок програми
         primaryStage.setTitle("Головний екран");
 
-
+        // Реалізація кнопки "Резервації"
         Button reservationsButton = new Button("Резервації");
         reservationsButton.setMinWidth(160);
         reservationsButton.setMinHeight(50);
@@ -47,6 +53,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         reservationsButton.setStyle("-fx-font-size: 24px;");
         reservationsButton.setOnAction(e -> showReservations());
 
+        // Реалізація кнопки "Клієнти"
         Button clientsButton = new Button("Клієнти");
         clientsButton.setMinWidth(160);
         clientsButton.setMinHeight(50);
@@ -55,6 +62,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         clientsButton.setId("menu-button");
         clientsButton.setOnAction(e -> showClients());
 
+        // Реалізація кнопки "Номери"
         Button roomsButton = new Button("Номери");
         roomsButton.setMinWidth(160);
         roomsButton.setMinHeight(50);
@@ -63,28 +71,32 @@ public class HotelReservationApp extends Application implements ClientListener, 
         roomsButton.setId("menu-button");
         roomsButton.setOnAction(e -> showRooms());
 
+        // HBox контейнер для розміщення кнопок
         HBox buttonHBox = new HBox(clientsButton, reservationsButton, roomsButton);
         buttonHBox.setAlignment(Pos.CENTER);
 
-
+        // Відображення кількості зайнятих та доступних номерів
         Label reservedRoomsLabel = new Label("Кількість зайнятих номерів : " + (rooms.size() - getFreeRooms().size()));
         Label unreservedRoomsLabel = new Label("Кількість доступних номерів : " + getFreeRooms().size());
 
+        // VBox контейнер для відображення інформації про кількість номерів
         VBox roominfoVBox = new VBox(reservedRoomsLabel, unreservedRoomsLabel);
         roominfoVBox.setAlignment(Pos.CENTER);
         roominfoVBox.setSpacing(10);
 
+        // VBox контейнер, що містить кнопки та інформацію про кількість номерів
         VBox root = new VBox(buttonHBox, roominfoVBox);
         root.setSpacing(10);
 
+        // Scene для головного вікна програми
         Scene scene = new Scene(root, 480, 120);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
+    // Метод для відображення вікна з резерваціями
     private void showReservations() {
         Stage reservationStage = new Stage();
         ReservationList reservationList = new ReservationList();
@@ -97,12 +109,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-
+    // Метод для відображення вікна з клієнтами
     private void showClients() {
         Stage clientsStage = new Stage();
         ClientList clientList = new ClientList();
         clientList.setClientListener(this);
-        ClientList.setHotelReservationStage(primaryStage); // Передаем ссылку на primaryStage HotelReservationApp
+        ClientList.setHotelReservationStage(primaryStage); // Надаємо посилання на primaryStage HotelReservationApp
         try {
             clientList.start(clientsStage);
         } catch (Exception e) {
@@ -110,7 +122,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-
+    // Метод для відображення вікна з номерами
     private void showRooms() {
         Stage roomStage = new Stage();
         RoomList roomList = new RoomList();
@@ -123,21 +135,25 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
+    // Обробник події для збереження клієнта
     @Override
     public void onClientSaved(Client client) {
         clients.add(client);
     }
 
+    // Обробник події для збереження номера
     @Override
     public void onRoomSaved(Room room) {
         rooms.add(room);
     }
 
+    // Обробник події для збереження резервації
     @Override
     public void onReservationSaved(Reservation reservation) {
         reservations.add(reservation);
     }
 
+    // Метод для отримання клієнтів з бази даних
     public static void getClientsFromDB() {
         int countClientsInDB = DatabaseHandler.countClientsFromDB();
         for (int i = 0; i < countClientsInDB; i++) {
@@ -149,6 +165,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
+    // Метод для отримання номерів з бази даних
     public static void getRoomsFromDB() {
         int countRoomsInDB = DatabaseHandler.countRoomsFromDB();
         for (int i = 0; i < countRoomsInDB; i++) {
@@ -160,6 +177,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
+    // Метод для отримання резервацій з бази даних
     public static void getReservationsFromDB() {
         int countReservaionsInDB = DatabaseHandler.countReservationsFromDB();
         for (int i = 0; i < countReservaionsInDB; i++) {
@@ -171,14 +189,17 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
+    // Метод для отримання списку клієнтів
     public static ArrayList<Client> getClients() {
         return clients;
     }
 
+    // Метод для отримання списку номерів
     public static ArrayList<Room> getRooms() {
         return rooms;
     }
 
+    // Метод для отримання списку вільних одномісних номерів
     public static ArrayList<Room> getFreeSingleRooms() {
         ArrayList<Room> singleRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -189,6 +210,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return singleRooms;
     }
 
+    // Метод для отримання списку вільних двомісних номерів
     public static ArrayList<Room> getFreePairRooms() {
         ArrayList<Room> pairRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -199,6 +221,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return pairRooms;
     }
 
+    // Метод для отримання списку вільних багатомісних номерів
     public static ArrayList<Room> getFreeMultiRooms() {
         ArrayList<Room> multiRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -209,7 +232,7 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return multiRooms;
     }
 
-
+    // Метод для отримання списку вільних номерів
     public static ArrayList<Room> getFreeRooms() {
         ArrayList<Room> freeRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -220,11 +243,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return freeRooms;
     }
 
-
+    // Метод для отримання резервацій
     public static ArrayList<Reservation> getReservations() {
         return reservations;
     }
 
+    // Метод для оновлення статусу резервацій
     private static void updateReservationStatus() {
         getReservationsFromDB();
         for (Reservation reservation : reservations) {
@@ -235,11 +259,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    public static void main(String[] args) {
+    // Точка входу у програму
+    public static void main(String[] args)
+    {
         updateReservationStatus();
         getClientsFromDB();
         getRoomsFromDB();
         launch(args);
     }
-
 }
