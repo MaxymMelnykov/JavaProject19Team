@@ -1,13 +1,19 @@
+/*
+Room:
+Цей клас призначений для номерів готелю.
+Він містить інформацію про номер, таку як номер кімнати, тип (одномісний, двомісний тощо),
+ціна і статус (вільний чи зайнятий).
+*/
 package com.javaproject19team.RoomPackage;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 
 public class Room {
-    private final StringProperty number;
-    private final StringProperty type;
-    private final IntegerProperty price;
-    private final StringProperty details;
+    private final StringProperty number; // Номер кімнати
+    private final StringProperty type; // Тип кімнати (одномісна, двомісна, багатомісна)
+    private final IntegerProperty price; // Ціна за ніч
+    private final StringProperty details; // Додаткові деталі про кімнату
     private boolean status; // True - Вільний / False - Зайнятий
 
     public Room(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details, boolean status) {
@@ -17,7 +23,7 @@ public class Room {
         this.details = details;
         this.status = status;
     }
-
+    // Геттери та сеттери
     public boolean isStatus() {
         return status;
     }
@@ -58,6 +64,7 @@ public class Room {
         return details;
     }
 
+    // Перевизначений метод toString
     @Override
     public String toString() {
         return "Номер "
@@ -66,8 +73,4 @@ public class Room {
                 ", " + price.get() +
                 ", " + details.get();
     }
-
 }
-
-
-

@@ -1,3 +1,7 @@
+/*
+ReservationList:
+Клас, який відображає список резервацій та надає можливість додавання нових резервацій.
+*/
 package com.javaproject19team.ReservationPackage;
 
 import com.javaproject19team.HotelReservationApp;
@@ -24,28 +28,31 @@ public class ReservationList extends Application {
 
     private ReservationListener reservationListener;
 
+    // Метод для встановлення головного вікна програми
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
 
+    // Метод для встановлення reservationListener резервацій
     public void setReservationListener(ReservationListener reservationListener) {
         this.reservationListener = reservationListener;
     }
 
-
+    // Метод, що викликається при старті додатку
     @Override
     public void start(Stage primaryStage) {
-        hotelReservationStage.hide();
+        hotelReservationStage.hide();  // Приховуємо головне вікно програми
         primaryStage.setTitle("Список резервацій");
         TableView<Reservation> tableView;
         primaryStage.getIcons().add(new Image("file:src/main/resources/icon.png"));
         ObservableList<Reservation> reservations = FXCollections.observableArrayList(HotelReservationApp.getReservations());
 
+        // Створення таблиці резервацій
         tableView = new TableView<>();
         tableView.setItems(reservations);
 
-
-        TableColumn<Reservation, String> clientSurnameColumn = new TableColumn<>("Фамілія гостя");
+        // Встановлення колонок для таблиці
+        TableColumn<Reservation, String> clientSurnameColumn = new TableColumn<>("Прізвище гостя");
         clientSurnameColumn.setCellValueFactory(data -> data.getValue().getClient().surnameProperty());
 
         TableColumn<Reservation, String> roomColumn = new TableColumn<>("Номер");
@@ -67,6 +74,7 @@ public class ReservationList extends Application {
         });
         tableView.getColumns().addAll(clientSurnameColumn, roomColumn, arrivalDateColumn, departureDateColumn, statusColumn);
 
+        // Кнопки для керування списком резервацій
         Button addButton = new Button("Додати");
         addButton.setOnAction(e -> showAddOrRemoveReservaions());
         addButton.setMinWidth(148);
@@ -112,11 +120,12 @@ public class ReservationList extends Application {
         printButton.setFocusTraversable(false);
         printButton.setId("menu-button");
 
-
+        // Групування кнопок
         HBox buttonsBox = new HBox(addButton, refreshButton, printButton, onMainMenuButton);
 
+        // Фільтр для пошуку резервацій за прізвищем або номером кімнати
         VBox filterBox = new VBox();
-        Label filterText = new Label("Фільтрація за фамілією клієнта або за номером кімнати");
+        Label filterText = new Label("Фільтрація за прізвищем клієнта або за номером кімнати");
 
         TextField filterField = new TextField();
         filterField.setPromptText("Пошук...");
@@ -132,9 +141,11 @@ public class ReservationList extends Application {
         filterBox.setAlignment(Pos.CENTER);
         filterBox.getChildren().addAll(filterText, filterField);
 
+        // Головний контейнер для розміщення всіх елементів у вікні
         VBox root = new VBox(buttonsBox, filterBox, tableView);
         root.setSpacing(10);
 
+        // Створення та налаштування сцени
         Scene scene = new Scene(root, 595, 500);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setResizable(false);
@@ -142,6 +153,7 @@ public class ReservationList extends Application {
         primaryStage.show();
     }
 
+    // Метод для додавання або видалення резервацій
     private void showAddOrRemoveReservaions() {
         Stage showAddOrRemoveReservaions = new Stage();
         ReservationEditor reservationEditor = new ReservationEditor();
@@ -153,29 +165,29 @@ public class ReservationList extends Application {
         }
     }
 
-
+    // Метод друкує інформацію про обрану резервацію
     private void printReservationInfo(Reservation reservation) {
-        // Создание объектов Label для каждой строки информации
+        // Створюємо елементи Label для кожного рядка інформації
         Label clientLabel = new Label("Клієнт: " + reservation.getClient().getName() + " " + reservation.getClient().getSurname());
         Label roomLabel = new Label("Номер: " + reservation.getRoom().getNumber());
         Label arrivalLabel = new Label("Дата заселення: " + reservation.getArrivalDate());
         Label departureLabel = new Label("Дата виселення: " + reservation.getDepartureDate());
 
-        // Создание объекта VBox и добавление в него объектов Label
+        // Створюємо контейнер VBox та додаємо до нього елементи Label
         VBox reservationVBox = new VBox();
         reservationVBox.getChildren().addAll(clientLabel, roomLabel, arrivalLabel, departureLabel);
 
-        // Создание объекта PrinterJob для печати
+        // Створюємо об'єкт PrinterJob для друку
         PrinterJob printerJob = PrinterJob.createPrinterJob();
         if (printerJob != null) {
-            boolean printDialogResult = printerJob.showPrintDialog(null); // Отображение диалога печати
+            boolean printDialogResult = printerJob.showPrintDialog(null); //  Відображення вікна для друку
             if (printDialogResult) {
-                // Печать содержимого
-                boolean printResult = printerJob.printPage(reservationVBox); // Печать объекта VBox
+                // Друкуємо вміст
+                boolean printResult = printerJob.printPage(reservationVBox); // Друкуємо об'єкт VBox
                 if (printResult) {
-                    printerJob.endJob(); // Завершение задания печати
+                    printerJob.endJob(); // Завершуємо завдання друку
                 } else {
-                    // Если печать не удалась, отобразите сообщение об ошибке
+                    // Якщо друку не вдалося, показуємо повідомлення про помилку
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Помилка друку");
                     alert.setHeaderText(null);
@@ -184,7 +196,7 @@ public class ReservationList extends Application {
                 }
             }
         } else {
-            // Если не удалось создать объект PrinterJob, выведите сообщение об ошибке
+            // Якщо не вдалося створити об'єкт PrinterJob, показуємо повідомлення про помилку
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Ошибка печати");
             alert.setHeaderText(null);
@@ -193,7 +205,7 @@ public class ReservationList extends Application {
         }
     }
 
-
+    // Точка входу у програму
     public static void main(String[] args) {
         launch(args);
     }
