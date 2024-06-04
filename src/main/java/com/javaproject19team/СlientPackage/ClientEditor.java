@@ -24,11 +24,13 @@ import javafx.scene.layout.VBox;
 public class ClientEditor extends Application {
     private ClientListener clientListener;
 
+
     /**
      * Метод, що викликається при старті додатку
      *
      * @param primaryStage Об'єкт вікна додатку
      */
+
     @Override
     public void start(Stage primaryStage) {
         // Налаштування вікна додавання нового клієнта
@@ -44,9 +46,9 @@ public class ClientEditor extends Application {
         nameHBox.setAlignment(Pos.CENTER);
         nameHBox.setSpacing(10);
 
-        Label surnameLabel = new Label("Фамілія:");
+        Label surnameLabel = new Label("Прізвище:");
         TextField surnameInput = new TextField();
-        surnameInput.setPromptText("Введіть фамілію");
+        surnameInput.setPromptText("Введіть прізвище");
 
         HBox surnameHBox = new HBox(surnameLabel, surnameInput);
         surnameHBox.setAlignment(Pos.CENTER);
@@ -75,11 +77,15 @@ public class ClientEditor extends Application {
         cancelButton.setId("cancel-button");
         //Кнопка "Зберегти"
         Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction(e -> saveClient(
-                new SimpleStringProperty(nameInput.getText()),
-                new SimpleStringProperty(surnameInput.getText()),
-                new SimpleStringProperty(emailInput.getText()),
-                new SimpleStringProperty(phoneInput.getText())));
+        saveButton.setOnAction(e -> {
+            if (validateInput(nameInput, surnameInput, emailInput, phoneInput)) {
+                saveClient(
+                        new SimpleStringProperty(nameInput.getText()),
+                        new SimpleStringProperty(surnameInput.getText()),
+                        new SimpleStringProperty(emailInput.getText()),
+                        new SimpleStringProperty(phoneInput.getText()));
+            }
+        });
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
 
@@ -99,6 +105,7 @@ public class ClientEditor extends Application {
         primaryStage.show();
     }
 
+
     /**
      * Метод для збереження даних про клієнта в базу даних
      *
@@ -107,6 +114,38 @@ public class ClientEditor extends Application {
      * @param emailInput    Електронна пошта клієнта
      * @param phoneNumber   Телефон клієнта
      */
+    // Метод для перевірки введених даних
+    private boolean validateInput(TextField nameInput, TextField surnameInput, TextField emailInput, TextField phoneInput) {
+        if (nameInput.getText().isEmpty() || surnameInput.getText().isEmpty() || emailInput.getText().isEmpty() || phoneInput.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, заповніть всі поля.");
+            return false;
+        }
+
+        if (!emailInput.getText().matches("\\S+@\\S+\\.\\S+")) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректний Email.");
+            return false;
+        }
+
+        if (!phoneInput.getText().matches("\\+380\\d{9}")) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректний номер телефону у форматі \"+380xxxxxxxxx\".");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    // Метод для показу Alert
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Метод для збереження даних про клієнта в базу даних
+
     private void saveClient(StringProperty clientName, StringProperty clientSurname, StringProperty emailInput, StringProperty phoneNumber) {
         // Отримання даних про клієнта
         String clientNameDB = clientName.get();
@@ -118,14 +157,15 @@ public class ClientEditor extends Application {
         DatabaseHandler.saveClientDB(clientNameDB, clientSurnameDB, emailDB, phoneDB);
         Client newClient = new Client(clientName, clientSurname, emailInput, phoneNumber);
         clientListener.onClientSaved(newClient);
-
     }
+
 
     /**
      * Метод для встановлення ClientListener
      *
      * @param listener Об'єкт слухача подій
      */
+
     public void setClientListener(ClientListener listener) {
         this.clientListener = listener;
     }

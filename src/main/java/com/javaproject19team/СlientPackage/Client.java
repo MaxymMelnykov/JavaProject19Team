@@ -66,11 +66,13 @@ public class Client {
         return phone;
     }
 
+
     /**
      * Перевизначений метод toString.
      *
      * @return Рядок, який містить ім'я, прізвище, електронну пошту та номер телефону клієнта
      */
+
     @Override
     public String toString() {
         return "Клієнт " +
@@ -79,5 +81,4 @@ public class Client {
                 ", " + email.get() +
                 ", " + phone.get();
     }
-
 }

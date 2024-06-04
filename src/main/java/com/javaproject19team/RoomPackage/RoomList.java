@@ -25,29 +25,35 @@ public class RoomList extends Application {
     private RoomListener roomListener;
     private static Stage hotelReservationStage;
 
+
     /**
      * Метод для встановлення слухача подій для збереження номера кімнати
      *
      * @param roomListener Об'єкт слухача подій
      */
+
     public void setRoomListener(RoomListener roomListener) {
         this.roomListener = roomListener;
     }
+
 
     /**
      * Метод для встановлення посилання на головне вікно додатку
      *
      * @param stage Головне вікно додатку
      */
+
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
+
 
     /**
      * Метод, що викликається при старті додатку.
      *
      * @param primaryStage головне вікно додатку
      */
+
     @Override
     public void start(Stage primaryStage) {
         // Ховаємо головне вікно додатку
@@ -181,11 +187,13 @@ public class RoomList extends Application {
         primaryStage.show();
     }
 
+
     /**
      * Метод, який викликається при закритті вікна
      *
      * @throws Exception Виняток при закритті вікна
      */
+
     @Override
     public void stop() throws Exception {
         super.stop();
@@ -193,9 +201,11 @@ public class RoomList extends Application {
         hotelReservationStage.show();
     }
 
+
     /**
      * Метод для відображення вікна додавання нового номера
      */
+
     private void showRoomAdd() {
         Stage showRooms = new Stage();
         RoomEditor roomEditor = new RoomEditor();

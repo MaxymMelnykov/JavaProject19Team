@@ -26,29 +26,35 @@ public class ClientList extends Application implements ClientListener {
     private final ObservableList<Client> clientsObs = FXCollections.observableArrayList();
     private ClientListener clientListener;
 
+
     /**
      * Метод для встановлення головного вікна HotelReservationApp
      *
      * @param stage Об'єкт головного вікна HotelReservationApp
      */
+
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
+
 
     /**
      * Метод для встановлення ClientListener
      *
      * @param clientListener Об'єкт слухача подій
      */
+
     public void setClientListener(ClientListener clientListener) {
         this.clientListener = clientListener;
     }
+
 
     /**
      * Метод, що викликається при старті додатку
      *
      * @param primaryStage Об'єкт вікна додатку
      */
+
     @Override
     public void start(Stage primaryStage) {
         // Ховаємо головне вікно HotelReservationApp
@@ -142,20 +148,24 @@ public class ClientList extends Application implements ClientListener {
         primaryStage.show();
     }
 
+
     /**
      * Метод, який викликається при збереженні клієнта
      *
      * @param client Об'єкт клієнта
      */
+
     @Override
     public void onClientSaved(Client client) {
         // Додаємо нового клієнта до списку
         clientsObs.add(client);
     }
 
+
     /**
      * Метод для відображення вікна додавання або видалення клієнта
      */
+
     private void showAddOrRemoveClients() {
         Stage addOrRemoveClients = new Stage();
         ClientEditor clientEditor = new ClientEditor();
@@ -168,11 +178,13 @@ public class ClientList extends Application implements ClientListener {
         System.out.println("Showing AddOrRemove");
     }
 
+
     /**
      * Метод, який викликається при закритті вікна
      *
      * @throws Exception Виняток при закритті вікна
      */
+
     @Override
     public void stop() throws Exception {
         super.stop();

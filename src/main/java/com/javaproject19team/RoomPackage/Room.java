@@ -80,11 +80,13 @@ public class Room {
         return details;
     }
 
+
     /**
      * Перевизначений метод toString для представлення об'єкта Room у вигляді рядка.
      *
      * @return рядок, що представляє інформацію про кімнату
      */
+
     @Override
     public String toString() {
         return "Номер "
@@ -93,5 +95,4 @@ public class Room {
                 ", " + price.get() +
                 ", " + details.get();
     }
-
 }

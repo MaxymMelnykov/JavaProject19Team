@@ -48,6 +48,7 @@ public class DatabaseHandler {
      * @param roomID Ідентифікатор кімнати
      * @return Кількість резервацій для вказаної кімнати
      */
+
     public static int countRoomsReservations(final int roomID) {
         int counter = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -64,11 +65,13 @@ public class DatabaseHandler {
         return counter;
     }
 
+
     /**
      * Метод підраховує кількість кімнат у базі даних.
      *
      * @return Кількість кімнат у базі даних
      */
+
     public static int countRoomsFromDB() {
         int counter = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -83,11 +86,13 @@ public class DatabaseHandler {
         return counter;
     }
 
+
     /**
      * Метод підраховує кількість клієнтів у базі даних.
      *
      * @return Кількість клієнтів у базі даних
      */
+
     public static int countClientsFromDB() {
         int counter = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -102,11 +107,13 @@ public class DatabaseHandler {
         return counter;
     }
 
+
     /**
      * Метод підраховує кількість резервацій у базі даних.
      *
      * @return Кількість резервацій у базі даних
      */
+
     public static int countReservationsFromDB() {
         int counter = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -131,6 +138,7 @@ public class DatabaseHandler {
      * @param email         Email клієнта
      * @param phone         Телефон клієнта
      */
+
     public static void saveClientDB(String clientName, String clientSurname, String email, String phone) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT_SQL)) {
@@ -146,6 +154,7 @@ public class DatabaseHandler {
         }
     }
 
+
     /**
      * Метод зберігає дані нової кімнати у базі даних.
      *
@@ -155,6 +164,7 @@ public class DatabaseHandler {
      * @param details Деталі кімнати
      * @param status  Статус кімнати
      */
+
     public static void saveRoomDB(String number, String type, int price, String details, boolean status) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ROOM_SQL)) {
@@ -169,6 +179,7 @@ public class DatabaseHandler {
         }
     }
 
+
     /**
      * Метод зберігає дані нової резервації у базі даних.
      *
@@ -178,6 +189,7 @@ public class DatabaseHandler {
      * @param departureDate Дата виїзду
      * @param status        Статус резервації
      */
+
     public static void saveReservationDB(Integer clientID, Integer roomID, Date arrivalDate, Date departureDate, boolean status) {
         System.out.println(arrivalDate);
         try (Connection connection = DatabaseConnection.getConnection();
@@ -195,12 +207,14 @@ public class DatabaseHandler {
 
     // Методи для отримання клієнтів, номерів та резервацій з БД
 
+
     /**
      * Метод виконує вибірку даних про клієнта з бази даних за його ідентифікатором.
      *
      * @param ClientID Ідентифікатор клієнта
      * @return Об'єкт клієнта
      */
+
     public static Client getClientFromDB(int ClientID) {
         Client client = null;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -224,12 +238,14 @@ public class DatabaseHandler {
         return client;
     }
 
+
     /**
      * Метод виконує вибірку даних про номер з бази даних за його ідентифікатором.
      *
      * @param RoomID Ідентифікатор номера
      * @return Об'єкт номера
      */
+
     public static Room getRoomFromDB(int RoomID) {
         Room room = null;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -254,12 +270,14 @@ public class DatabaseHandler {
         return room;
     }
 
+
     /**
      * Метод виконує вибірку даних про резервацію з бази даних за її ідентифікатором.
      *
      * @param reservationID Ідентифікатор резервації
      * @return Об'єкт резервації
      */
+
     public static Reservation getReservationFromDB(int reservationID) {
         Reservation reservation = null;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -292,12 +310,14 @@ public class DatabaseHandler {
 
     // Методи для отримання ID клієнта з БД
 
+
     /**
      * Метод виконує вибірку ідентифікатора клієнта за його даними.
      *
      * @param client Об'єкт клієнта
      * @return Ідентифікатор клієнта
      */
+
     public static int getClientIDFromDB(Client client) {
         int ID = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -317,12 +337,14 @@ public class DatabaseHandler {
         return ID;
     }
 
+
     /**
      * Метод виконує вибірку ідентифікатора номера за його даними.
      *
      * @param room Об'єкт номера
      * @return Ідентифікатор номера
      */
+
     public static int getRoomIDFromDB(Room room) {
         int ID = 0;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -345,12 +367,14 @@ public class DatabaseHandler {
     щоб, наприклад, якщо кімната була одномістна і до неї додавався новий клієнт, кімната змінювала статус
      */
 
+
     /**
      * Метод виконує перевірку, чи зайнята вказана кімната.
      *
      * @param roomNumber Номер кімнати
      * @return Чи зайнята кімната
      */
+
     public static boolean isRoomOccupied(String roomNumber) {
         boolean isOccupied = false;
         try (Connection connection = DatabaseConnection.getConnection();
@@ -369,11 +393,13 @@ public class DatabaseHandler {
 
     //Методи для зміни статусу кімнат та резервацій в БД
 
+
     /**
      * Метод виконує оновлення статусу кімнати на "false".
      *
      * @param number Номер кімнати
      */
+
     public static void UpdateStatusRoomToFalseDB(String number) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_ROOMS_TO_FALSE_SQL)) {
@@ -384,11 +410,13 @@ public class DatabaseHandler {
         }
     }
 
+
     /**
      * Метод виконує оновлення статусу резервації на "false".
      *
      * @param ClientID Ідентифікатор клієнта
      */
+
     public static void UpdateStatusReservationToFalseDB(int ClientID) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_STATUS_RESERVATIONS_TO_FALSE_SQL)) {

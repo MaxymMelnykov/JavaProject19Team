@@ -5,6 +5,7 @@ RoomEditor:
 package com.javaproject19team.RoomPackage;
 
 import com.javaproject19team.DatabasePackage.DatabaseHandler;
+import com.javaproject19team.HotelReservationApp;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,10 +20,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 /**
  * RoomEditor:
  * Клас, який відповідає за відображення вікна додавання нового номеру та збереження введеної інформації.
  */
+
+
+
 public class RoomEditor extends Application {
     RoomListener roomListener;
 
@@ -86,13 +91,19 @@ public class RoomEditor extends Application {
 
         // Кнопка для збереження доданої кімнати
         Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction(e -> saveRoom(
-                new SimpleStringProperty(numberInput.getText()),
-                new SimpleStringProperty(typeInput.getValue()),
-                new SimpleIntegerProperty(Integer.parseInt(priceInput.getText())),
-                new SimpleStringProperty(detailsInput.getText())));
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
+
+        saveButton.setOnAction(e -> {
+            if (validateInput(numberInput, typeInput, priceInput, detailsInput)) {
+                saveRoom(
+                        new SimpleStringProperty(numberInput.getText()),
+                        new SimpleStringProperty(typeInput.getValue()),
+                        new SimpleIntegerProperty(Integer.parseInt(priceInput.getText())),
+                        new SimpleStringProperty(detailsInput.getText()));
+            }
+        });
+
 
         // HBox контейнер для кнопок
         HBox buttonHBox = new HBox(cancelButton, saveButton);
@@ -111,6 +122,7 @@ public class RoomEditor extends Application {
         primaryStage.show();
     }
 
+
     /**
      * Метод для збереження введеного користувачем номера кімнати
      *
@@ -119,6 +131,7 @@ public class RoomEditor extends Application {
      * @param price    Ціна кімнати
      * @param details  Детальна інформація про кімнату
      */
+
     private void saveRoom(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details) {
         String numberDB = number.get();
         String typeDB = type.get();
@@ -138,6 +151,7 @@ public class RoomEditor extends Application {
 
     }
 
+
     /**
      * Метод для встановлення слухача подій для збереження номера кімнати
      *
@@ -146,7 +160,46 @@ public class RoomEditor extends Application {
     public void setRoomListener(RoomListener listener) {
         this.roomListener = listener;
     }
+    // Метод для перевірки введених даних
+    private boolean validateInput(TextField numberInput, ComboBox<String> typeInput, TextField priceInput, TextField detailsInput) {
+        for(int i = 0; i < DatabaseHandler.countRoomsFromDB(); i++){
+            if(Objects.equals(numberInput.getText(), HotelReservationApp.getRooms().get(i).getNumber())){
+                showAlert(Alert.AlertType.ERROR,"Помилка введення", "Будь ласка, введіть інший номер кімнати.");
+                return false;
+            }
+        }
+        if (numberInput.getText().isEmpty() || typeInput.getValue() == null || priceInput.getText().isEmpty() || detailsInput.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, заповніть всі поля.");
+            return false;
+        }
 
+        try {
+            int price = Integer.parseInt(priceInput.getText());
+            if (price < 0) {
+                showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректну ціну (позитивне число).");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректну ціну (число).");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Метод для показу Alert
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Метод для встановлення слухача подій для збереження номера кімнати
+    public void setRoomListener(RoomListener listener) {
+        this.roomListener = listener;
+    }
     // Точка входу у програму
     public static void main(String[] args) {
         launch(args);

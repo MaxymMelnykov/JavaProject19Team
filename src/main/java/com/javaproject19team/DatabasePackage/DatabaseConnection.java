@@ -1,7 +1,6 @@
 /*
 DatabaseConnection:
-Цей клас призначений за ініціалізацію бази даних та таблиць.
-Він містить SQL-запити для створення таблиць, які використовуються в програмі готелю.
+Цей клас призначений для ініціалізації бази даних та таблиць.
 */
 
 package com.javaproject19team.DatabasePackage;
@@ -14,10 +13,12 @@ import java.sql.SQLException;
 /**
  * Клас, який забезпечує підключення до бази даних.
  */
+
 public class DatabaseConnection {
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "student";
+
 
     /**
      * Метод, що повертає об'єкт Connection для взаємодії з базою даних.

@@ -88,12 +88,16 @@ public class ReservationEditor extends Application {
         // Кнопки "Зберегти"
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
-        saveButton.setOnAction(e -> saveReservation(
-                clientComboBox.getValue(),
-                roomComboBox.getValue(),
-                datePickerArrival.getValue(),
-                datePickerDeparture.getValue()
-        ));
+        saveButton.setOnAction(e -> {
+            if (validateInput(clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture)) {
+                saveReservation(
+                        clientComboBox.getValue(),
+                        roomComboBox.getValue(),
+                        datePickerArrival.getValue(),
+                        datePickerDeparture.getValue()
+                );
+            }
+        });
 
         HBox buttonHbox = new HBox(cancelButton, saveButton);
         buttonHbox.setSpacing(80);
@@ -112,6 +116,7 @@ public class ReservationEditor extends Application {
         primaryStage.show();
     }
 
+
     /**
      * Метод для збереження резервації.
      * @param client обраний клієнт
@@ -119,6 +124,7 @@ public class ReservationEditor extends Application {
      * @param arrivalDate дата прибуття
      * @param departureDate дата виїзду
      */
+  
     private void saveReservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate) {
         int clientIDDB = DatabaseHandler.getClientIDFromDB(client);
         int roomIDDB = DatabaseHandler.getRoomIDFromDB(room);
@@ -133,18 +139,22 @@ public class ReservationEditor extends Application {
     }
 
 
+
     /**
      * Встановлення reservationListener резервацій.
      * @param listener об'єкт слухача
      */
+  
     public void setReservationListener(ReservationListener listener) {
         this.reservationListener = listener;
     }
+
 
     /**
      * Метод для оновлення списку кімнат в залежності від вибраного типу.
      * @param selectedType вибраний тип кімнати
      */
+
     private void updateRoomList(String selectedType) {
         ObservableList<Room> roomsObservableList;
         switch (selectedType) {
@@ -163,6 +173,32 @@ public class ReservationEditor extends Application {
         }
         roomComboBox.setItems(roomsObservableList);
     }
+
+
+    // Метод для перевірки введених даних
+    private boolean validateInput(ComboBox<Client> clientComboBox, ComboBox<Room> roomComboBox, DatePicker datePickerArrival, DatePicker datePickerDeparture) {
+        if (clientComboBox.getValue() == null || roomComboBox.getValue() == null || datePickerArrival.getValue() == null || datePickerDeparture.getValue() == null) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, заповніть всі поля.");
+            return false;
+        }
+
+        if (datePickerArrival.getValue().isAfter(datePickerDeparture.getValue())) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Дата виселення повинна бути пізніше дати заселення.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Метод для показу Alert
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     // Точка входу у програму
     public static void main(String[] args) {
