@@ -23,22 +23,44 @@ import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.LocalDate;
 
+/**
+ * Клас ReservationList відповідає за відображення списку резервацій
+ * та надає можливість додавання нових резервацій.
+ */
 public class ReservationList extends Application {
     private static Stage hotelReservationStage;
 
     private ReservationListener reservationListener;
 
-    // Метод для встановлення головного вікна програми
+
+    /**
+     * Встановлює головне вікно програми.
+     *
+     * @param stage головне вікно програми
+     */
+
     public static void setHotelReservationStage(Stage stage) {
         hotelReservationStage = stage;
     }
 
-    // Метод для встановлення reservationListener резервацій
+
+    /**
+     * Встановлює об'єкт ReservationListener для обробки подій резервацій.
+     *
+     * @param reservationListener об'єкт ReservationListener
+     */
+
     public void setReservationListener(ReservationListener reservationListener) {
         this.reservationListener = reservationListener;
     }
 
-    // Метод, що викликається при старті додатку
+
+    /**
+     * Метод, що викликається при старті додатку.
+     *
+     * @param primaryStage головне вікно додатку
+     */
+
     @Override
     public void start(Stage primaryStage) {
         hotelReservationStage.hide();  // Приховуємо головне вікно програми
@@ -153,7 +175,11 @@ public class ReservationList extends Application {
         primaryStage.show();
     }
 
-    // Метод для додавання або видалення резервацій
+
+    /**
+     * Метод для додавання або видалення резервацій.
+     */
+
     private void showAddOrRemoveReservaions() {
         Stage showAddOrRemoveReservaions = new Stage();
         ReservationEditor reservationEditor = new ReservationEditor();
@@ -165,7 +191,13 @@ public class ReservationList extends Application {
         }
     }
 
-    // Метод друкує інформацію про обрану резервацію
+
+    /**
+     * Метод друкує інформацію про обрану резервацію.
+     *
+     * @param reservation обрана резервація для друку
+     */
+
     private void printReservationInfo(Reservation reservation) {
         // Створюємо елементи Label для кожного рядка інформації
         Label clientLabel = new Label("Клієнт: " + reservation.getClient().getName() + " " + reservation.getClient().getSurname());

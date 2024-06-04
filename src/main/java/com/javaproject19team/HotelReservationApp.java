@@ -1,4 +1,4 @@
-// Карпенко А.М., Мельников М.С., Кучер Д.С., Сокульський П.А., Стебловцев В.Є.
+// Карпенко А.М., Мельников М.С., Кучер Д.С., Сокульський П.А.,Стебловцев В.Є.
 // ООП на мові Java
 // Проєкт на тему "Візуалізація графічного інтерфейсу Резервацій в готелю"
 // 7 червня 2024
@@ -62,12 +62,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Клас HotelReservationApp відповідає за головний вхід в програму, управління головним екраном та ініціалізацію
+ * інших частин програми, таких як клієнти, номери та резервації.
+ */
 public class HotelReservationApp extends Application implements ClientListener, RoomListener, ReservationListener {
     static ArrayList<Client> clients = new ArrayList<>();
     static ArrayList<Room> rooms = new ArrayList<>();
     static ArrayList<Reservation> reservations = new ArrayList<>();
     public static Stage primaryStage;
 
+    /**
+     * Метод start викликається при запуску програми та ініціалізує головний екран програми.
+     * @param primaryStage Головний Stage програми.
+     */
     @Override
     public void start(Stage primaryStage) {
         // Головне вікно програми
@@ -129,7 +137,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         primaryStage.show();
     }
 
-    // Метод для відображення вікна з резерваціями
+
+    /**
+     * Метод для відображення вікна з резерваціями.
+     * Створює новий об'єкт ReservationList та ініціалізує його для відображення списку резервацій.
+     */
+
     private void showReservations() {
         Stage reservationStage = new Stage();
         ReservationList reservationList = new ReservationList();
@@ -142,7 +155,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Метод для відображення вікна з клієнтами
+
+    /**
+     * Метод для відображення вікна з клієнтами.
+     * Створює новий об'єкт ClientList та ініціалізує його для відображення списку клієнтів.
+     */
+
     private void showClients() {
         Stage clientsStage = new Stage();
         ClientList clientList = new ClientList();
@@ -155,7 +173,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Метод для відображення вікна з номерами
+
+    /**
+     * Метод для відображення вікна з номерами.
+     * Створює новий об'єкт RoomList та ініціалізує його для відображення списку номерів.
+     */
+
     private void showRooms() {
         Stage roomStage = new Stage();
         RoomList roomList = new RoomList();
@@ -168,25 +191,47 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Обробник події для збереження клієнта
+
+    /**
+     * Обробник події для збереження клієнта.
+     * Додає нового клієнта до списку клієнтів.
+     * @param client Новий клієнт.
+     */
+
     @Override
     public void onClientSaved(Client client) {
         clients.add(client);
     }
 
-    // Обробник події для збереження номера
+
+    /**
+     * Обробник події для збереження номера.
+     * Додає новий номер до списку номерів.
+     * @param room Новий номер.
+     */
+
     @Override
     public void onRoomSaved(Room room) {
         rooms.add(room);
     }
 
-    // Обробник події для збереження резервації
+
+    /**
+     * Обробник події для збереження резервації.
+     * Додає нову резервацію до списку резервацій.
+     * @param reservation Нова резервація.
+     */
+
     @Override
     public void onReservationSaved(Reservation reservation) {
         reservations.add(reservation);
     }
 
-    // Метод для отримання клієнтів з бази даних
+
+    /**
+     * Метод для отримання списку клієнтів з бази даних та їх додавання в локальний список.
+     */
+
     public static void getClientsFromDB() {
         int countClientsInDB = DatabaseHandler.countClientsFromDB();
         for (int i = 0; i < countClientsInDB; i++) {
@@ -198,7 +243,11 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Метод для отримання номерів з бази даних
+
+    /**
+     * Метод для отримання списку номерів з бази даних та їх додавання в локальний список.
+     */
+
     public static void getRoomsFromDB() {
         int countRoomsInDB = DatabaseHandler.countRoomsFromDB();
         for (int i = 0; i < countRoomsInDB; i++) {
@@ -210,7 +259,11 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Метод для отримання резервацій з бази даних
+
+    /**
+     * Метод для отримання списку резервацій з бази даних та їх додавання в локальний список.
+     */
+
     public static void getReservationsFromDB() {
         int countReservaionsInDB = DatabaseHandler.countReservationsFromDB();
         for (int i = 0; i < countReservaionsInDB; i++) {
@@ -222,17 +275,32 @@ public class HotelReservationApp extends Application implements ClientListener, 
         }
     }
 
-    // Метод для отримання списку клієнтів
+
+    /**
+     * Метод для отримання списку клієнтів.
+     * @return Список клієнтів.
+     */
+
     public static ArrayList<Client> getClients() {
         return clients;
     }
 
-    // Метод для отримання списку номерів
+
+    /**
+     * Метод для отримання списку номерів.
+     * @return Список номерів.
+     */
+
     public static ArrayList<Room> getRooms() {
         return rooms;
     }
 
-    // Метод для отримання списку вільних одномісних номерів
+
+    /**
+     * Метод для отримання списку вільних одномісних номерів.
+     * @return Список вільних одномісних номерів.
+     */
+
     public static ArrayList<Room> getFreeSingleRooms() {
         ArrayList<Room> singleRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -243,7 +311,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return singleRooms;
     }
 
-    // Метод для отримання списку вільних двомісних номерів
+
+    /**
+     * Метод для отримання списку вільних двомісних номерів.
+     * @return Список вільних двомісних номерів.
+     */
+
     public static ArrayList<Room> getFreePairRooms() {
         ArrayList<Room> pairRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -254,7 +327,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return pairRooms;
     }
 
-    // Метод для отримання списку вільних багатомісних номерів
+
+    /**
+     * Метод для отримання списку вільних багатомісних номерів.
+     * @return Список вільних багатомісних номерів.
+     */
+
     public static ArrayList<Room> getFreeMultiRooms() {
         ArrayList<Room> multiRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -265,7 +343,12 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return multiRooms;
     }
 
-    // Метод для отримання списку вільних номерів
+
+    /**
+     * Метод для отримання списку вільних номерів.
+     * @return Список вільних номерів.
+     */
+
     public static ArrayList<Room> getFreeRooms() {
         ArrayList<Room> freeRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -276,12 +359,22 @@ public class HotelReservationApp extends Application implements ClientListener, 
         return freeRooms;
     }
 
-    // Метод для отримання резервацій
+
+    /**
+     * Метод для отримання списку резервацій.
+     * @return Список резервацій.
+     */
+
     public static ArrayList<Reservation> getReservations() {
         return reservations;
     }
 
-    // Метод для оновлення статусу резервацій
+
+    /**
+     * Метод для оновлення статусу резервацій.
+     * Позначає резервації як недійсні, якщо дата виїзду вже минула.
+     */
+
     private static void updateReservationStatus() {
         getReservationsFromDB();
         for (Reservation reservation : reservations) {

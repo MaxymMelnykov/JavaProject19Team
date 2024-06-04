@@ -17,8 +17,19 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 
+/**
+ * ClientEditor:
+ * Цей клас відповідає за відображення вікна додавання нового клієнта та збереження введеної інформації.
+ */
 public class ClientEditor extends Application {
     private ClientListener clientListener;
+
+
+    /**
+     * Метод, що викликається при старті додатку
+     *
+     * @param primaryStage Об'єкт вікна додатку
+     */
 
     @Override
     public void start(Stage primaryStage) {
@@ -94,6 +105,15 @@ public class ClientEditor extends Application {
         primaryStage.show();
     }
 
+
+    /**
+     * Метод для збереження даних про клієнта в базу даних
+     *
+     * @param clientName    Ім'я клієнта
+     * @param clientSurname Прізвище клієнта
+     * @param emailInput    Електронна пошта клієнта
+     * @param phoneNumber   Телефон клієнта
+     */
     // Метод для перевірки введених даних
     private boolean validateInput(TextField nameInput, TextField surnameInput, TextField emailInput, TextField phoneInput) {
         if (nameInput.getText().isEmpty() || surnameInput.getText().isEmpty() || emailInput.getText().isEmpty() || phoneInput.getText().isEmpty()) {
@@ -125,6 +145,7 @@ public class ClientEditor extends Application {
     }
 
     // Метод для збереження даних про клієнта в базу даних
+
     private void saveClient(StringProperty clientName, StringProperty clientSurname, StringProperty emailInput, StringProperty phoneNumber) {
         // Отримання даних про клієнта
         String clientNameDB = clientName.get();
@@ -138,7 +159,13 @@ public class ClientEditor extends Application {
         clientListener.onClientSaved(newClient);
     }
 
-    // Метод для встановлення ClientListener
+
+    /**
+     * Метод для встановлення ClientListener
+     *
+     * @param listener Об'єкт слухача подій
+     */
+
     public void setClientListener(ClientListener listener) {
         this.clientListener = listener;
     }

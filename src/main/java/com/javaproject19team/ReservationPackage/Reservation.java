@@ -12,6 +12,12 @@ import com.javaproject19team.СlientPackage.Client;
 
 import java.time.LocalDate;
 
+/**
+ * Reservation:
+ * Клас, що призначений для резервацій номеру.
+ * Він містить інформацію про клієнта, який зробив резервацію, номер кімнати, дати заїзду та виїзду,
+ * а також статус резервації.
+ */
 public class Reservation {
     private Client client;
     private Room room;
@@ -19,6 +25,14 @@ public class Reservation {
     private LocalDate departureDate;
     private boolean status;
 
+    /**
+     * Конструктор, який ініціалізує об'єкт резервації з вказаними параметрами.
+     * @param client клієнт, що зробив резервацію
+     * @param room кімната, яку заброньовано
+     * @param arrivalDate дата прибуття
+     * @param departureDate дата виїзду
+     * @param status статус резервації
+     */
     public Reservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate, boolean status) {
         this.client = client; // Клієнт, що робить резервацію
         this.room = room; // Кімната, яку заброньовано
@@ -73,4 +87,5 @@ public class Reservation {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 }

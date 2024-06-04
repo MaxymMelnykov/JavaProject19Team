@@ -20,11 +20,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.Objects;
+
+/**
+ * RoomEditor:
+ * Клас, який відповідає за відображення вікна додавання нового номеру та збереження введеної інформації.
+ */
+
+
 
 public class RoomEditor extends Application {
     RoomListener roomListener;
 
+    /**
+     * Метод, що викликається при старті додатку.
+     *
+     * @param primaryStage головне вікно додатку
+     */
     @Override
     public void start(Stage primaryStage) {
         // Налаштування вікна додавання нового номеру
@@ -82,6 +93,7 @@ public class RoomEditor extends Application {
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
+
         saveButton.setOnAction(e -> {
             if (validateInput(numberInput, typeInput, priceInput, detailsInput)) {
                 saveRoom(
@@ -91,6 +103,7 @@ public class RoomEditor extends Application {
                         new SimpleStringProperty(detailsInput.getText()));
             }
         });
+
 
         // HBox контейнер для кнопок
         HBox buttonHBox = new HBox(cancelButton, saveButton);
@@ -109,7 +122,16 @@ public class RoomEditor extends Application {
         primaryStage.show();
     }
 
-    // Метод для збереження введеного користувачем номера кімнати
+
+    /**
+     * Метод для збереження введеного користувачем номера кімнати
+     *
+     * @param number   Номер кімнати
+     * @param type     Тип кімнати
+     * @param price    Ціна кімнати
+     * @param details  Детальна інформація про кімнату
+     */
+
     private void saveRoom(StringProperty number, StringProperty type, IntegerProperty price, StringProperty details) {
         String numberDB = number.get();
         String typeDB = type.get();
@@ -129,6 +151,15 @@ public class RoomEditor extends Application {
 
     }
 
+
+    /**
+     * Метод для встановлення слухача подій для збереження номера кімнати
+     *
+     * @param listener Об'єкт слухача подій
+     */
+    public void setRoomListener(RoomListener listener) {
+        this.roomListener = listener;
+    }
     // Метод для перевірки введених даних
     private boolean validateInput(TextField numberInput, ComboBox<String> typeInput, TextField priceInput, TextField detailsInput) {
         for(int i = 0; i < DatabaseHandler.countRoomsFromDB(); i++){

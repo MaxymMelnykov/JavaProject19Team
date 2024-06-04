@@ -22,11 +22,20 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
+/**
+ * ReservationEditor:
+ * Цей клас відповідає за відображення вікна додавання нової резервації та збереження введеної інформації.
+ */
 public class ReservationEditor extends Application {
     ComboBox<Room> roomComboBox;
     ReservationListener reservationListener;
     ObservableList<Client> clientsObservableList = FXCollections.observableArrayList(HotelReservationApp.getClients());
 
+    /**
+     * Метод, що викликається при старті додатку.
+     *
+     * @param primaryStage головне вікно додатку
+     */
     @Override
     public void start(Stage primaryStage) {
         // Налаштування головного вікна програми
@@ -107,7 +116,15 @@ public class ReservationEditor extends Application {
         primaryStage.show();
     }
 
-    // Метод для збереження резервації
+
+    /**
+     * Метод для збереження резервації.
+     * @param client обраний клієнт
+     * @param room обрана кімната
+     * @param arrivalDate дата прибуття
+     * @param departureDate дата виїзду
+     */
+  
     private void saveReservation(Client client, Room room, LocalDate arrivalDate, LocalDate departureDate) {
         int clientIDDB = DatabaseHandler.getClientIDFromDB(client);
         int roomIDDB = DatabaseHandler.getRoomIDFromDB(room);
@@ -121,12 +138,23 @@ public class ReservationEditor extends Application {
         reservationListener.onReservationSaved(newReservation);
     }
 
-    // Встановлення reservationListener резервацій
+
+
+    /**
+     * Встановлення reservationListener резервацій.
+     * @param listener об'єкт слухача
+     */
+  
     public void setReservationListener(ReservationListener listener) {
         this.reservationListener = listener;
     }
 
-    // Метод для оновлення списку кімнат в залежності від вибраного типу
+
+    /**
+     * Метод для оновлення списку кімнат в залежності від вибраного типу.
+     * @param selectedType вибраний тип кімнати
+     */
+
     private void updateRoomList(String selectedType) {
         ObservableList<Room> roomsObservableList;
         switch (selectedType) {
@@ -145,6 +173,7 @@ public class ReservationEditor extends Application {
         }
         roomComboBox.setItems(roomsObservableList);
     }
+
 
     // Метод для перевірки введених даних
     private boolean validateInput(ComboBox<Client> clientComboBox, ComboBox<Room> roomComboBox, DatePicker datePickerArrival, DatePicker datePickerDeparture) {
@@ -169,6 +198,7 @@ public class ReservationEditor extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 
     // Точка входу у програму
     public static void main(String[] args) {
