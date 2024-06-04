@@ -66,11 +66,15 @@ public class ClientEditor extends Application {
         cancelButton.setId("cancel-button");
         //Кнопка "Зберегти"
         Button saveButton = new Button("Зберегти");
-        saveButton.setOnAction(e -> saveClient(
-                new SimpleStringProperty(nameInput.getText()),
-                new SimpleStringProperty(surnameInput.getText()),
-                new SimpleStringProperty(emailInput.getText()),
-                new SimpleStringProperty(phoneInput.getText())));
+        saveButton.setOnAction(e -> {
+            if (validateInput(nameInput, surnameInput, emailInput, phoneInput)) {
+                saveClient(
+                        new SimpleStringProperty(nameInput.getText()),
+                        new SimpleStringProperty(surnameInput.getText()),
+                        new SimpleStringProperty(emailInput.getText()),
+                        new SimpleStringProperty(phoneInput.getText()));
+            }
+        });
         saveButton.setMinWidth(100);
         saveButton.setId("save-button");
 
@@ -90,6 +94,36 @@ public class ClientEditor extends Application {
         primaryStage.show();
     }
 
+    // Метод для перевірки введених даних
+    private boolean validateInput(TextField nameInput, TextField surnameInput, TextField emailInput, TextField phoneInput) {
+        if (nameInput.getText().isEmpty() || surnameInput.getText().isEmpty() || emailInput.getText().isEmpty() || phoneInput.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, заповніть всі поля.");
+            return false;
+        }
+
+        if (!emailInput.getText().matches("\\S+@\\S+\\.\\S+")) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректний Email.");
+            return false;
+        }
+
+        if (!phoneInput.getText().matches("\\+380\\d{9}")) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, введіть коректний номер телефону у форматі \"+380xxxxxxxxx\".");
+            return false;
+        }
+
+
+        return true;
+    }
+
+    // Метод для показу Alert
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     // Метод для збереження даних про клієнта в базу даних
     private void saveClient(StringProperty clientName, StringProperty clientSurname, StringProperty emailInput, StringProperty phoneNumber) {
         // Отримання даних про клієнта
@@ -102,7 +136,6 @@ public class ClientEditor extends Application {
         DatabaseHandler.saveClientDB(clientNameDB, clientSurnameDB, emailDB, phoneDB);
         Client newClient = new Client(clientName, clientSurname, emailInput, phoneNumber);
         clientListener.onClientSaved(newClient);
-
     }
 
     // Метод для встановлення ClientListener

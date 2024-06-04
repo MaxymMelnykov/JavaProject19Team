@@ -79,12 +79,16 @@ public class ReservationEditor extends Application {
         // Кнопки "Зберегти"
         Button saveButton = new Button("Зберегти");
         saveButton.setMinWidth(100);
-        saveButton.setOnAction(e -> saveReservation(
-                clientComboBox.getValue(),
-                roomComboBox.getValue(),
-                datePickerArrival.getValue(),
-                datePickerDeparture.getValue()
-        ));
+        saveButton.setOnAction(e -> {
+            if (validateInput(clientComboBox, roomComboBox, datePickerArrival, datePickerDeparture)) {
+                saveReservation(
+                        clientComboBox.getValue(),
+                        roomComboBox.getValue(),
+                        datePickerArrival.getValue(),
+                        datePickerDeparture.getValue()
+                );
+            }
+        });
 
         HBox buttonHbox = new HBox(cancelButton, saveButton);
         buttonHbox.setSpacing(80);
@@ -140,6 +144,30 @@ public class ReservationEditor extends Application {
                 break;
         }
         roomComboBox.setItems(roomsObservableList);
+    }
+
+    // Метод для перевірки введених даних
+    private boolean validateInput(ComboBox<Client> clientComboBox, ComboBox<Room> roomComboBox, DatePicker datePickerArrival, DatePicker datePickerDeparture) {
+        if (clientComboBox.getValue() == null || roomComboBox.getValue() == null || datePickerArrival.getValue() == null || datePickerDeparture.getValue() == null) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Будь ласка, заповніть всі поля.");
+            return false;
+        }
+
+        if (datePickerArrival.getValue().isAfter(datePickerDeparture.getValue())) {
+            showAlert(Alert.AlertType.ERROR, "Помилка введення", "Дата виселення повинна бути пізніше дати заселення.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Метод для показу Alert
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     // Точка входу у програму
