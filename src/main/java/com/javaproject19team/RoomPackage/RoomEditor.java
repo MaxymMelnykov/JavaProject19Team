@@ -20,6 +20,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 
 /**
  * RoomEditor:
@@ -152,14 +154,7 @@ public class RoomEditor extends Application {
     }
 
 
-    /**
-     * Метод для встановлення слухача подій для збереження номера кімнати
-     *
-     * @param listener Об'єкт слухача подій
-     */
-    public void setRoomListener(RoomListener listener) {
-        this.roomListener = listener;
-    }
+
     // Метод для перевірки введених даних
     private boolean validateInput(TextField numberInput, ComboBox<String> typeInput, TextField priceInput, TextField detailsInput) {
         for(int i = 0; i < DatabaseHandler.countRoomsFromDB(); i++){
@@ -196,10 +191,15 @@ public class RoomEditor extends Application {
         alert.showAndWait();
     }
 
-    // Метод для встановлення слухача подій для збереження номера кімнати
     public void setRoomListener(RoomListener listener) {
+        /**
+         * Метод для встановлення слухача подій для збереження номера кімнати
+         *
+         * @param listener Об'єкт слухача подій
+         */
         this.roomListener = listener;
     }
+
     // Точка входу у програму
     public static void main(String[] args) {
         launch(args);

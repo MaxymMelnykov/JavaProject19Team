@@ -9,7 +9,6 @@ public interface ClientListener {
      *
      * @param client Об'єкт клієнта, який було збережено
      */
-public interface ClientListener {
-    // Метод, який буде викликаний, коли клієнт збережений
+
     void onClientSaved(Client client);
 }

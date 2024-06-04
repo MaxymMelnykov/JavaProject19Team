@@ -109,10 +109,10 @@ public class ClientEditor extends Application {
     /**
      * Метод для збереження даних про клієнта в базу даних
      *
-     * @param clientName    Ім'я клієнта
-     * @param clientSurname Прізвище клієнта
+     * @param nameInput    Ім'я клієнта
+     * @param surnameInput Прізвище клієнта
      * @param emailInput    Електронна пошта клієнта
-     * @param phoneNumber   Телефон клієнта
+     * @param phoneInput   Телефон клієнта
      */
     // Метод для перевірки введених даних
     private boolean validateInput(TextField nameInput, TextField surnameInput, TextField emailInput, TextField phoneInput) {
